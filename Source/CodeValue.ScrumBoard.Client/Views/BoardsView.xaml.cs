@@ -18,9 +18,9 @@ namespace CodeValue.ScrumBoard.Client.Views
     /// <summary>
     /// Interaction logic for BoardView.xaml
     /// </summary>
-    public partial class BoardView : UserControl
+    public partial class BoardsView : UserControl
     {
-        public BoardView()
+        public BoardsView()
         {
             InitializeComponent();
         }
