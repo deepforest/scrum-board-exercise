@@ -4,24 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CodeValue.ScrumBoard.Client.Views"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Border Background="Beige"
-            BorderThickness="0.5"
-            BorderBrush="Gray"
-            CornerRadius="5" Margin="60,66,47,33" RenderTransformOrigin="0.5,0.5">
-        <Border.Effect>
-            <DropShadowEffect />
-        </Border.Effect>
+
+    <Border Background="White" BorderThickness="2" BorderBrush="AliceBlue" CornerRadius="6">
         <StackPanel>
 
-            <TextBlock HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" Text="User Name" VerticalAlignment="Top" Width="216"/>
-            <TextBlock HorizontalAlignment="Left" Margin="10,80,0,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Width="216"/>
-            <TextBox HorizontalAlignment="Left" Height="23" Margin="10,31,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="189" TextChanged="TextBox_TextChanged"/>
-            <PasswordBox HorizontalAlignment="Left" Height="23" Margin="10,101,0,0" VerticalAlignment="Top" Width="189"/>
-            <Button IsDefault="True" Content="Login" HorizontalAlignment="Left" Margin="42,161,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-            <Button IsCancel="True" Content="Cancel" HorizontalAlignment="Left" Margin="122,161,0,0" VerticalAlignment="Top" Width="75"/>
-
+            <TextBlock  Text="User Name" Padding="10" HorizontalAlignment="Left" />
+            <TextBox Text="{Binding UserName}" HorizontalAlignment="Stretch" Padding="10" />
+            <TextBlock  Text="Password" Padding="10" HorizontalAlignment="Left"/>
+            <PasswordBox   HorizontalAlignment="Stretch" Padding="10" />
+            <Button  Content="Login" HorizontalAlignment="Center" Padding="15" cal:Message.Attach="[Event Click] = [Action Login()]" />
+            <Button  Content="Register" HorizontalAlignment="Center" Padding="15" cal:Message.Attach="[Event Click] = [Action Register()]"/>
         </StackPanel>
     </Border>
 </UserControl>
