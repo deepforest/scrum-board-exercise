@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CodeValue.ScrumBoard.Service.Entities;
 using CodeValue.ScrumBoard.Service.Managers;
+using MongoDB.Driver;
 
 namespace CodeValue.ScrumBoard.Service.Controllers
 {
@@ -21,7 +22,7 @@ namespace CodeValue.ScrumBoard.Service.Controllers
         //[HttpGet]
         //public async Task<IEnumerable<Board>> GetBoards()
         //{
-           
+
         //}
 
         //[HttpPost]
@@ -29,5 +30,14 @@ namespace CodeValue.ScrumBoard.Service.Controllers
         //{
 
         //}
+
+        [HttpPut]
+        public async Task<bool> UpdateBoardDetails([FromBody] Board boardToUpdate)
+        {
+            var manager = new BoardManager();
+            var result = await manager.UpdateBoard(boardToUpdate);
+
+            return result.IsAcknowledged;
+        }
     }
 }
