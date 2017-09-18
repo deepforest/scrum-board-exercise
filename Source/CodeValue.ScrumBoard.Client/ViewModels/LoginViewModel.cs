@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public class LoginViewModel
+    public class LoginViewModel : Screen
     {
         private string _password;
         public string Password
@@ -17,14 +17,30 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             }
             set
             {
-                if (_password.Equals(value))
+                if (object.Equals(value, _password))
                     return;
                 _password = value;
-
+                NotifyOfPropertyChange();
             }
         }
 
-        public string UserName { get; set; }
 
+        private string _userName;
+        public string UserName
+        {
+            get
+            {
+                return _userName;
+            }
+            set
+            {
+                if (object.Equals(value, _userName))
+                    return;
+                _userName = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        
     }
 }
