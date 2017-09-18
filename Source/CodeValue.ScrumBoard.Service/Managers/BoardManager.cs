@@ -17,10 +17,10 @@ namespace CodeValue.ScrumBoard.Service.Managers
             _collection = database.GetCollection<BsonDocument>("Boards");
         }
 
-        //private async void TestDb()
+        //public async void TestDb()
         //{
         //    var filter = Builders<BsonDocument>.Filter.Eq("_id", ObjectId.Parse("59bfffd8d0ab4e2ecce43392"));
-        //    var update = Builders<BsonDocument>.Update.Set("count", "it works!");
+        //    var update = Builders<BsonDocument>.Update.Set("count", "one one").Set("type", "two two");
 
         //    await _collection.UpdateOneAsync(filter, update);
 
@@ -29,7 +29,8 @@ namespace CodeValue.ScrumBoard.Service.Managers
         public async Task<UpdateResult> UpdateBoard(Board board)
         {
             var filter = Builders<BsonDocument>.Filter.Eq("Id", board.Id);
-            var update = Builders<BsonDocument>.Update.Set("Description", board.Description);
+            var update = Builders<BsonDocument>.Update.Set("Name", board.Name)
+                .Set("Description", board.Description);
 
             UpdateResult result = await _collection.UpdateOneAsync(filter, update);
             return result;
