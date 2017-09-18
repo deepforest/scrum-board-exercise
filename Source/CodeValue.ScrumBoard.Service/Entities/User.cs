@@ -6,5 +6,10 @@ namespace CodeValue.ScrumBoard.Service.Entities
 {
     public class User : Entity
     {
+        public string Name { get; set; }
+
+        public string Secret { get; set; }
+
+        public byte[] Image { get; set; }
     }
 }
