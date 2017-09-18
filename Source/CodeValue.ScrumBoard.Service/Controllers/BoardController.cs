@@ -18,16 +18,16 @@ namespace CodeValue.ScrumBoard.Service.Controllers
             _boardManager = boardManager;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<Board>> GetBoards()
-        {
+        //[HttpGet]
+        //public async Task<IEnumerable<Board>> GetBoards()
+        //{
            
-        }
+        //}
 
-        [HttpPost]
-        public async Task<Board> CreateBoard([FromBody] Board student)
-        {
+        //[HttpPost]
+        //public async Task<Board> CreateBoard([FromBody] Board student)
+        //{
 
-        }
+        //}
     }
 }
