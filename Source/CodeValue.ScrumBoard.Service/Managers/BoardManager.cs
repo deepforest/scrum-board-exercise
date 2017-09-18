@@ -13,7 +13,7 @@ namespace CodeValue.ScrumBoard.Service.Managers
         public BoardManager()
         {
             var client = new MongoClient(_connectionString);
-            var database = client.GetDatabase("ScrumBoard");
+            var database = client.GetDatabase("scrumboard");
             _collection = database.GetCollection<BsonDocument>("Boards");
         }
 
