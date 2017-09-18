@@ -9,6 +9,7 @@ using System.Windows;
 using CodeValue.ScrumBoard.Client.ViewModels;
 using System.IO;
 using System.Reflection;
+using CodeValue.ScrumBoard.Client.Modules;
 
 namespace CodeValue.ScrumBoard.Client
 {
@@ -27,6 +28,9 @@ namespace CodeValue.ScrumBoard.Client
             // Register infrastructure.
             builder.RegisterType<WindowManager>().As<IWindowManager>().SingleInstance();
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
+
+            // Register modules.
+            builder.RegisterModule<LoggingModule>();
 
             RegisterViewModels(builder);
 
