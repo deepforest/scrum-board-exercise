@@ -5,8 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CodeValue.ScrumBoard.Client.Views"
         mc:Ignorable="d"
-        Title="MainView" Height="300" Width="300">
-    <Grid>
-        
+        xmlns:caliburn="http://www.caliburnproject.org"
+        Title="MainView"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Height="600" Width="600">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ContentControl Grid.Row="0" caliburn:View.Model="{Binding TitleBarScreen}"/>
+        <ContentControl Grid.Row="1" caliburn:View.Model="{Binding Items[1]}"/>
     </Grid>
 </Window>

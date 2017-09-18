@@ -15,7 +15,7 @@ namespace CodeValue.ScrumBoard.Client
     internal class Bootstrapper : BootstrapperBase
     {
         private const string ModuleSearchPattern = "*.exe";
-        private const string ModuleFilePrefix = "CodeValue.ScrumBoard";
+        private const string ModuleFilePrefix = "CodeValue.ScrumBoard.Client";
 
         private IContainer _container;
 
@@ -77,7 +77,10 @@ namespace CodeValue.ScrumBoard.Client
         private static void RegisterViewModels(ContainerBuilder builder)
         {
             builder.RegisterType<MainViewModel>().SingleInstance();
-          
+            // TODO: add title to consts
+            builder.RegisterType<TitleBarViewModel>().WithParameter("title","Virtual Scrum Board");
+            builder.RegisterType<LoginViewModel>();
+
         }
 
       
