@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CodeValue.ScrumBoard.Service.Entities;
 using MongoDB.Driver;
+using CodeValue.ScrumBoard.Service.Infrastructure;
 
 namespace CodeValue.ScrumBoard.Service.Managers
 {

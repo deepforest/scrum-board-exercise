@@ -1,11 +1,11 @@
-﻿<Window x:Class="CodeValue.ScrumBoard.Client.Views.BoardView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CodeValue.ScrumBoard.Client.Views"
-        mc:Ignorable="d"
-        Title="BoardView" Height="300" Width="300">
+﻿<UserControl x:Class="CodeValue.ScrumBoard.Client.Views.BoardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CodeValue.ScrumBoard.Client.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -30,13 +30,13 @@
             <Button Grid.Row="0" Content="+" 
                     Width="20" HorizontalAlignment="Right" 
                     BorderThickness="0" Background="Transparent"/>
-            <ListBox Grid.Row="1" x:Name="TodoList"
+            <ItemsControl Grid.Row="1" x:Name="TodoList"
                      Background="Transparent"
                      HorizontalContentAlignment="Stretch">
                 <!--<ListBox.ItemTemplate>
                     Hamam's Code
                 </ListBox.ItemTemplate>-->
-            </ListBox>
+            </ItemsControl>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="1" 
               x:Name="DoingGrid" Margin="5"
@@ -48,12 +48,12 @@
             <TextBox Grid.Row="0"
                      Text="Doing"
                      Background="Transparent" />
-            <ListBox Grid.Row="1" Background="Transparent"
+            <ItemsControl Grid.Row="1" Background="Transparent"
                      HorizontalContentAlignment="Stretch">
                 <!--<ListBox.ItemTemplate>
                     Hamam's Code
                 </ListBox.ItemTemplate>-->
-            </ListBox>
+            </ItemsControl>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="2"
               x:Name="DoneGrid" Margin="5"
@@ -65,12 +65,12 @@
             <TextBox Grid.Row="0"
                      Text="Done"
                      Background="Transparent" />
-            <ListBox Grid.Row="1" Background="Transparent"
+            <ItemsControl Grid.Row="1" Background="Transparent"
                      HorizontalContentAlignment="Stretch">
                 <!--<ListBox.ItemTemplate>
                     Hamam's Code
                 </ListBox.ItemTemplate>-->
-            </ListBox>
-        </Grid>        
+            </ItemsControl>
+        </Grid>
     </Grid>
-</Window>
+</UserControl>
