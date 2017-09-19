@@ -30,5 +30,10 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         {
 
         }
+
+        public void SaveBoardDetailsChanges()
+        {
+            
+        }
     }
 }
