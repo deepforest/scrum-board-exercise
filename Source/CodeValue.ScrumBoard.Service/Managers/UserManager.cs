@@ -19,7 +19,7 @@ namespace CodeValue.ScrumBoard.Service.Managers
         public IEnumerable<User> GetUsers()
         {
             var mongoCollection = DBHelper.GetCollection<User>(DbCollections.Users);
-            return mongoCollection.Find(Builders<User>.Filter.Empty).ToList();
+            return mongoCollection.Find(Builders<User>.Filter.Empty).ToEnumerable();
         }
     }
 }

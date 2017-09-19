@@ -13,5 +13,7 @@ namespace CodeValue.ScrumBoard.Client.Models
         public string Name { get; set; }
 
         public string[] TeamMembers { get; set; }
+
+        public string Id { get; set; }
     }
 }

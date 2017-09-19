@@ -7,13 +7,14 @@ using CodeValue.ScrumBoard.Service.Entities;
 using CodeValue.ScrumBoard.Service.Managers;
 using MongoDB.Driver;
 using CodeValue.ScrumBoard.Service.DTOs;
+using MongoDB.Bson;
 
 namespace CodeValue.ScrumBoard.Service.Controllers
 {
     [Route("api/[controller]")]
     public class BoardController : Controller
     {
-        private IBoardManager _boardManager;
+        private readonly IBoardManager _boardManager;
 
         public BoardController(IBoardManager boardManager)
         {
@@ -21,23 +22,40 @@ namespace CodeValue.ScrumBoard.Service.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Board> GetBoards()
+        public IEnumerable<NewBoardDetails> GetBoards()
         {
             var boards = _boardManager.GetBoards();
-            return boards;
+            foreach (var board in boards)
+            {
+                yield return new NewBoardDetails()
+                {
+                    Description = board.Description,
+                    Name = board.Name,
+                    Id = board.Id.ToString()
+                };
+            }
         }
 
         [HttpPost]
-        public async Task<Board> CreateBoard([FromBody] NewBoardDetails board)
+        public async Task<NewBoardDetails> CreateBoard([FromBody] NewBoardDetails newBoard)
         {
-            return await _boardManager.CreateBoardAsync(board);
+            var board = await _boardManager.CreateBoardAsync(newBoard);
+            newBoard.Id = board.Id.ToString();
+            return newBoard;
         }
 
         [HttpPut]
-        public async Task<bool> UpdateBoardDetails([FromBody] Board boardToUpdate)
+        public async Task<bool> UpdateBoardDetails([FromBody] NewBoardDetails boardToUpdate)
         {
             var result = await _boardManager.UpdateBoardAsync(boardToUpdate);
-            return result.IsAcknowledged;
+            return result;
+        }
+
+        [HttpDelete("{boardId}")]
+        public async Task<bool> DeleteBoard(string boardId)
+        {
+            var result = await _boardManager.RemoveBoardAsync(boardId);
+            return result;
         }
     }
 }
