@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.Navigation
 {
-    public interface IBoardsViewModel : INavigation
+    public interface IBoardsViewModel<T> : INavigation <T>
     {
     }
 }

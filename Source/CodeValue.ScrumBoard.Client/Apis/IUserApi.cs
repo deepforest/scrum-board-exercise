@@ -11,13 +11,13 @@ namespace CodeValue.ScrumBoard.Client.Apis
     public interface IUserApi
     {
         
-        [Get("/users}")]
-        Task<UserModel> GetUserAsync(string name, string password);
+        [Post("/user/login")]
+        Task<UserModel> GetUserAsync(UserModel student);
 
-        [Post("/users")]
-        Task<UserModel> CreateUserAsync(UserModel student);
+        [Post("/user")]
+        Task<string> CreateUserAsync(UserModel student);
 
-        [Delete("/students/{id}")]
+        [Delete("/user/{id}")]
         Task DeleteUserAsync(int id);
     }
 

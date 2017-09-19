@@ -6,13 +6,20 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.Models
 {
+    public enum TaskModelStatus
+    {
+        Todo = 10,
+        Doing = 20,
+        Done = 30
+    }
+
     public class TaskModel
     {
         public string CreatedBy { get; set; }
 
         public string AssignedTo { get; set; }
 
-        public TaskStatus Status { get; set; }
+        public TaskModelStatus Status { get; set; }
 
         public int Priority { get; set; }
 

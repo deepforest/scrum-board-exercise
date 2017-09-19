@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.Events
 {
-    public class UserLoggedInEvent
+    public class UserLoggedInPayload
     {
         private readonly UserModel _userModel;
 
-        public UserLoggedInEvent(UserModel userModel)
+        public UserLoggedInPayload(UserModel userModel)
         {
             _userModel = userModel;
         }

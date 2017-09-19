@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public class TaskViewModel  : ITaskViewModel
+    public class TaskViewModel  : ITaskViewModel<object>
     {
 
-        public async Task<bool> NavigateToAsync()
+        public async Task<bool> NavigateToAsync(object args)
         {
             return await Task.Run(() => { return true; });
         }
