@@ -9,6 +9,6 @@ namespace CodeValue.ScrumBoard.Client.Navigation
 {
     public interface INavigation  
     {        
-        Task<bool> NavigateToAsync();
+        Task<bool> NavigateToAsync<T>(T args);
     }
 }

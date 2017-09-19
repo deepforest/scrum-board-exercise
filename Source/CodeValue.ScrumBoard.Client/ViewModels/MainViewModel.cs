@@ -3,6 +3,7 @@ using CodeValue.ScrumBoard.Client.Common;
 using CodeValue.ScrumBoard.Client.Events;
 using CodeValue.ScrumBoard.Client.Navigation;
 using CodeValue.ScrumBoard.Client.Views;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         private string _currentUserName;
         private ImageSource _userImage;
-
+        
      
                      
         public MainViewModel(IEventAggregator eventAggregator,                                                           
@@ -54,7 +55,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             CurrentWindowState = WindowState.Normal;
             UserImage = new BitmapImage(new Uri(@"/Images/unknown_user.png", UriKind.Relative));
             CurrentUserName = "guest";
-
+          
         }
 
         public WindowState CurrentWindowState
@@ -92,9 +93,11 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
                  _currentUserName = value; 
                  NotifyOfPropertyChange(() => CurrentUserName); 
              } 
-         } 
-  
-         public ImageSource UserImage
+         }
+
+      
+
+        public ImageSource UserImage
          { 
              get => _userImage; 
              set 
@@ -134,13 +137,15 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             CurrentWindowState = WindowState.Normal;
         }
 
-#endregion
-        private async void Navigate(INavigation navigation)
+        #endregion
+
+      
+        private async void Navigate<T>(INavigation navigation,T args)
         {
             try
             {
                 ProgressBarVisibility = Visibility.Visible;
-                if (await navigation.NavigateToAsync())
+                if (await navigation.NavigateToAsync<T>(args))
                     ActiveItem = navigation;            
             }
             finally
@@ -157,7 +162,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
                 var userModel = message.UserModel;
                 CurrentUserName = userModel.Name;
                 UserImage = Utils.BytesToImage(userModel.Image);                
-                Navigate(_boardViewModelCreator());
+                Navigate<object>(_boardViewModelCreator(),null);
             }
             catch { }
         }
@@ -166,8 +171,11 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         {
             try
             {
-                // TODO: clear user image and user name.
-                Navigate(_loginViewModelCreator());
+              
+                // TODO: uri link in conatants
+                UserImage = new BitmapImage(new Uri(@"/Images/unknown_user.png", UriKind.Relative));
+                CurrentUserName = "guest";
+                Navigate<object>(_loginViewModelCreator(),null);
             }
             catch { }
         }
@@ -177,7 +185,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             var userModel = message.UserModel;
             CurrentUserName = userModel.Name;
             UserImage = Utils.BytesToImage(userModel.Image);
-            Navigate(_boardViewModelCreator());
+            Navigate<object>(_boardViewModelCreator(),null);
         }
 
         #endregion
