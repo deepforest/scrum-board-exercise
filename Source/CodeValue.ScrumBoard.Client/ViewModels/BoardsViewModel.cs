@@ -16,7 +16,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         public BoardsViewModel()
         {
-            DisplayName = "Virtual Scrum Board";
+            
         }
 
         public async Task<bool> NavigateToAsync()
