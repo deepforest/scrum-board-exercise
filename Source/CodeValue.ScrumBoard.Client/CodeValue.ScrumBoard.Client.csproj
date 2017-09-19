@@ -70,14 +70,19 @@
     </ApplicationDefinition>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Common\Constants.cs" />
+    <Compile Include="DTOs\TaskRequestResult.cs" />
     <Compile Include="Events\BoardActiveEvent.cs" />
     <Compile Include="Events\UserLoggedInEvent.cs" />
     <Compile Include="Events\UserLoggedOutEvent.cs" />
     <Compile Include="Events\UserRegisterEvent.cs" />
+    <Compile Include="Models\CommentModel.cs" />
+    <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Navigation\ILoginViewModel.cs" />
     <Compile Include="Navigation\INavigation.cs" />
+    <Compile Include="ViewModels\BoardsViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\TaskViewModel.cs" />
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -124,9 +129,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\unknown_user.png" />
   </ItemGroup>
