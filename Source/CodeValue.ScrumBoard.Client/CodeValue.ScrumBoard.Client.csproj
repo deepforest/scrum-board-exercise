@@ -79,6 +79,10 @@
     </ApplicationDefinition>
     <Compile Include="Apis\IUserApi.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Common\Types\WindowStateTypes.cs" />
+    <Compile Include="Events\WindowStateChangedEvent.cs" />
+    <Compile Include="Models\Board.cs" />
+    <Compile Include="Modules\LoggingModule.cs" />
     <Compile Include="Common\Constants.cs" />
     <Compile Include="Common\Utils.cs" />
     <Compile Include="DTOs\TaskRequestResult.cs" />

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using CodeValue.ScrumBoard.Service.Entities;
 using CodeValue.ScrumBoard.Service.Managers;
 using MongoDB.Driver;
+using CodeValue.ScrumBoard.Service.DTOs;
 
 namespace CodeValue.ScrumBoard.Service.Controllers
 {
@@ -19,24 +20,23 @@ namespace CodeValue.ScrumBoard.Service.Controllers
             _boardManager = boardManager;
         }
 
-        //[HttpGet]
-        //public async Task<IEnumerable<Board>> GetBoards()
-        //{
+        [HttpGet]
+        public IEnumerable<Board> GetBoards()
+        {
+            var boards = _boardManager.GetBoards();
+            return boards;
+        }
 
-        //}
-
-        //[HttpPost]
-        //public async Task<Board> CreateBoard([FromBody] Board student)
-        //{
-
-        //}
+        [HttpPost]
+        public async Task<Board> CreateBoard([FromBody] NewBoardDetails board)
+        {
+            return await _boardManager.CreateBoardAsync(board);
+        }
 
         [HttpPut]
         public async Task<bool> UpdateBoardDetails([FromBody] Board boardToUpdate)
         {
-            var manager = new BoardManager();
-            var result = await manager.UpdateBoard(boardToUpdate);
-
+            var result = await _boardManager.UpdateBoardAsync(boardToUpdate);
             return result.IsAcknowledged;
         }
     }
