@@ -1,5 +1,7 @@
 ﻿using CodeValue.ScrumBoard.Service.Entities;
+using CodeValue.ScrumBoard.Service.Managers;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Service.Controllers
@@ -11,8 +13,13 @@ namespace CodeValue.ScrumBoard.Service.Controllers
         [HttpGet("{id}", Name = nameof(GetUser))]
         public async Task<IActionResult> GetUser(int id)
         {
-
-            return Ok();
+            var manager = new UserManager();
+            var user = manager.GetUsers().FirstOrDefault(u => Equals(u.Id, id));
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
         }
 
         [HttpPost]
