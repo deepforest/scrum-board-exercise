@@ -24,6 +24,8 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         {
             eventAggregator.Subscribe(this);
             _eventAggregator = eventAggregator;
+            _name = string.Empty;
+            _password = string.Empty;
         }
         public string Password
         {
@@ -81,9 +83,10 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         public async void Register()
         {
+            const string imagePath = @"d:\images\people-icon.png";
             try
             {
-                var user = new UserModel { Name = _name, Password = _password, Image = Utils.ImageToBytes(null) };
+                var user = new UserModel { Name = _name, Password = _password, Image = Utils.ImageToBytes(Utils.ImageFromPath(imagePath)) };
                 var api = RestService.For<IUserApi>(Constants.ServerUri);
                 var resultUser = await api.CreateUserAsync(user);
                 if (resultUser != null)

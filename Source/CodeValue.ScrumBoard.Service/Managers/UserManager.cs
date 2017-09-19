@@ -9,6 +9,13 @@ namespace CodeValue.ScrumBoard.Service.Managers
 {
     public class UserManager : IUserManager
     {
+        public async Task<string> CreateUser(User user)
+        {
+            var mongoCollection = DBHelper.GetCollection<User>(DbCollections.Users);
+            await mongoCollection.InsertOneAsync(user);
+            return user.Id.ToString();
+        }
+
         public IEnumerable<User> GetUsers()
         {
             var mongoCollection = DBHelper.GetCollection<User>(DbCollections.Users);
