@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.Events
 {
-    public class UserLoggedOutEvent
+    public class TaskSelectedPayload
     {
     }
 }

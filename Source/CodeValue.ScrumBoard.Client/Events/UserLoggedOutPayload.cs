@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.Events
 {
-    /// <summary>
-    /// This event is fired when a new board is selected.
-    /// </summary>
-    public class BoardActiveEvent
+    public class UserLoggedOutPayload
     {
     }
 }

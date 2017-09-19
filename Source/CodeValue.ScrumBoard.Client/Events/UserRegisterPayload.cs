@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.Events
 {
-    public class UserRegisterEvent
+    public class UserRegisterPayload
     {
 
         private readonly UserModel _userModel;
 
-        public UserRegisterEvent(UserModel userModel)
+        public UserRegisterPayload(UserModel userModel)
         {
             _userModel = userModel;
         }

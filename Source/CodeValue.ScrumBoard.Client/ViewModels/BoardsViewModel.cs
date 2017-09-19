@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public class BoardsViewModel : Screen , IBoardsViewModel
+    public class BoardsViewModel : Screen , IBoardsViewModel<object>
     {
         private readonly ObservableCollection<Board> _BoardsCollection;
 
@@ -26,7 +26,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         }
 
-        public async Task<bool> NavigateToAsync<T>(T args)
+        public async Task<bool> NavigateToAsync(object args)
         {
             return await Task.Run(() => { return true; });
         }
