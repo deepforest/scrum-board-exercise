@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace CodeValue.ScrumBoard.Client.Views
@@ -17,7 +18,7 @@ namespace CodeValue.ScrumBoard.Client.Views
     /// <summary>
     /// Interaction logic for BoardView.xaml
     /// </summary>
-    public partial class BoardView : Window
+    public partial class BoardView : UserControl
     {
         public BoardView()
         {
