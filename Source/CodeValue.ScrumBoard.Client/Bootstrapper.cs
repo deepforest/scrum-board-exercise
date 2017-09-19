@@ -9,7 +9,8 @@ using System.Windows;
 using CodeValue.ScrumBoard.Client.ViewModels;
 using System.IO;
 using System.Reflection;
-using CodeValue.ScrumBoard.Client.Modules;
+using CodeValue.ScrumBoard.Client.Common;
+using CodeValue.ScrumBoard.Client.Navigation;
 
 namespace CodeValue.ScrumBoard.Client
 {
@@ -29,15 +30,10 @@ namespace CodeValue.ScrumBoard.Client
             builder.RegisterType<WindowManager>().As<IWindowManager>().SingleInstance();
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 
-            // Register modules.
-            builder.RegisterModule<LoggingModule>();
-
             RegisterViewModels(builder);
 
            _container = builder.Build();
         }
-
-        private Assembly ThisAssembly => Assembly.GetExecutingAssembly();
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
@@ -78,14 +74,18 @@ namespace CodeValue.ScrumBoard.Client
             return files;
         }
 
-        private void RegisterViewModels(ContainerBuilder builder)
+      
+
+        private static void RegisterViewModels(ContainerBuilder builder)
         {
-            builder
-                .RegisterTypes(ThisAssembly
-                    .GetTypes()
-                    .Where(x => x.Name.EndsWith("ViewModel"))
-                    .ToArray())
-                .AsSelf();
+            builder.RegisterType<MainViewModel>().SingleInstance();                      
+            builder.RegisterType<LoginViewModel>().As<ILoginViewModel>();
+            builder.RegisterType<BoardsViewModel>().As<IBoardsViewModel>();
+            builder.RegisterType<TaskViewModel>().As<ITaskViewModel>();
         }
+
+      
+
     }
+
 }
