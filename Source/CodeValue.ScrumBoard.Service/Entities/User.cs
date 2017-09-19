@@ -8,6 +8,8 @@ namespace CodeValue.ScrumBoard.Service.Entities
     {
         public string Name { get; set; }
 
+        public string Password { get; set; }
+
         public string Secret { get; set; }
 
         public byte[] Image { get; set; }
