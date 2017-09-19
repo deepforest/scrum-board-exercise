@@ -9,7 +9,6 @@ namespace CodeValue.ScrumBoard.Service.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-
         [HttpGet("{id}", Name = nameof(GetUser))]
         public async Task<IActionResult> GetUser(int id)
         {
