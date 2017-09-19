@@ -71,6 +71,9 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Common\Constants.cs" />
     <Compile Include="DTOs\TaskRequestResult.cs" />
+    <Compile Include="Entities\Comment.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Task.cs" />
     <Compile Include="Events\BoardActiveEvent.cs" />
     <Compile Include="Events\UserLoggedInEvent.cs" />
     <Compile Include="Events\UserLoggedOutEvent.cs" />
