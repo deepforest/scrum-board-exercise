@@ -1,4 +1,5 @@
-﻿using CodeValue.ScrumBoard.Service.Entities;
+﻿using CodeValue.ScrumBoard.Service.DTOs;
+using CodeValue.ScrumBoard.Service.Entities;
 using CodeValue.ScrumBoard.Service.Managers;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace CodeValue.ScrumBoard.Service.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] User user)
+        public async Task<IActionResult> CreateUser([FromBody] NewUser user)
         {
             var manager = new UserManager();
             var id = await manager.CreateUser(user);
