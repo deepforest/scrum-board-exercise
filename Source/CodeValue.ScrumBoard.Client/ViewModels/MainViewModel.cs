@@ -20,6 +20,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
     public sealed class MainViewModel : Conductor<object>.Collection.OneActive,
                                         IHandle<UserLoggedInPayload>,
                                         IHandle<UserLoggedOutPayload>,
+        IHandle<BoardActivePayload> ,
         IHandle<UserRegisterPayload>
     {
 
@@ -29,6 +30,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         private Func<INavigation<object>> _loginViewModelCreator;
         private Func<INavigation<object>> _boardsViewModelCreator;
+        private Func<INavigation<BoardActivePayload>> _boardViewModelCreator;
         private Func<INavigation<object>> _taskViewModelCreator;
 
         private string _currentUserName;
@@ -38,13 +40,15 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
                      
         public MainViewModel(IEventAggregator eventAggregator,                                                           
                             Func<ILoginViewModel<object>> loginViewModelCreator,
-                            Func<IBoardsViewModel<object>> boardViewModelCreator,
+                            Func<IBoardsViewModel<object>> boardsViewModelCreator,
+                            Func<IBoardViewModel<BoardActivePayload>> boardViewModelCreator,
                             Func<ITaskViewModel<object>> taskViewModelCreator)
         {
             _progressBarVisibility = Visibility.Collapsed;
             eventAggregator.Subscribe(this);
             _loginViewModelCreator = loginViewModelCreator;
-            _boardsViewModelCreator = boardViewModelCreator;
+            _boardsViewModelCreator = boardsViewModelCreator;
+            _boardViewModelCreator = boardViewModelCreator;
             _taskViewModelCreator = taskViewModelCreator;
 
             Items.AddRange(new INavigation<object>[]
@@ -186,6 +190,11 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             CurrentUserName = userModel.Name;
             UserImage = Utils.BytesToImage(userModel.Image);
             Navigate<object>(_boardsViewModelCreator(),null);
+        }
+
+        public void Handle(BoardActivePayload message)
+        {
+            Navigate<BoardActivePayload>(_boardViewModelCreator(), message);
         }
 
         #endregion

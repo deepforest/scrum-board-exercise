@@ -11,6 +11,7 @@ using CodeValue.ScrumBoard.Client.Common;
 using CodeValue.ScrumBoard.Client.Events;
 using CodeValue.ScrumBoard.Client.Models;
 using Microsoft.Win32;
+using System.Threading;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
@@ -75,7 +76,10 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         public async Task<bool> NavigateToAsync(object args)
         {
-            return await Task.Run(() => { return true; });
+            return await Task.Run(() => 
+            {
+                
+                return true; });
         }
 
         public void SelectImage()
