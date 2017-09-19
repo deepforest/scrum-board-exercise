@@ -19,14 +19,16 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             
         }
 
-        public async Task<bool> NavigateToAsync()
-        {
-            return await Task.Run(() => { return true; });
-        }
+       
 
         public async void AddNewBoard()
         {
 
+        }
+
+        public async Task<bool> NavigateToAsync<T>(T args)
+        {
+            return await Task.Run(() => { return true; });
         }
     }
 }

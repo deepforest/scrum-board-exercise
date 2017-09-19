@@ -10,7 +10,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
     public class TaskViewModel  : ITaskViewModel
     {
 
-        public async Task<bool> NavigateToAsync()
+        public async Task<bool> NavigateToAsync<T>(T args)
         {
             return await Task.Run(() => { return true; });
         }
