@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-
+using CodeValue.ScrumBoard.Client.Common;
 using CodeValue.ScrumBoard.Client.Events;
 using CodeValue.ScrumBoard.Client.Navigation;
 using CodeValue.ScrumBoard.Client.Views;
@@ -153,7 +153,9 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         {
             try
             {
-                // TODO: set user image and user name.
+                var userModel = message.UserModel;
+                CurrentUserName = userModel.Name;
+                UserImage = Utils.BytesToImage(userModel.Image);                
                 Navigate(_boardViewModelCreator());
             }
             catch { }

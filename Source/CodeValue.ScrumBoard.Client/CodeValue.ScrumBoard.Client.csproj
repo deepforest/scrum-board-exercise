@@ -80,6 +80,7 @@
     <Compile Include="Apis\IUserApi.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Common\Constants.cs" />
+    <Compile Include="Common\Utils.cs" />
     <Compile Include="DTOs\TaskRequestResult.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\Entity.cs" />

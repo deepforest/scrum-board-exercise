@@ -5,12 +5,26 @@ using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using CodeValue.ScrumBoard.Client.Navigation;
+using Refit;
+using CodeValue.ScrumBoard.Client.Apis;
+using CodeValue.ScrumBoard.Client.Common;
+using CodeValue.ScrumBoard.Client.Events;
+using CodeValue.ScrumBoard.Client.Models;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
     public class LoginViewModel : Screen, ILoginViewModel
     {
+        private readonly IEventAggregator _eventAggregator;
         private string _password;
+
+        private string _name;
+
+        public LoginViewModel(IEventAggregator eventAggregator)
+        {
+            eventAggregator.Subscribe(this);
+            _eventAggregator = eventAggregator;
+        }
         public string Password
         {
             get
@@ -26,7 +40,20 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             }
         }
 
-        public string UserName { get; set; }
+        public string UserName
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (_name.Equals(value))
+                    return;
+                _name = value;
+
+            }
+        }
 
         public async Task<bool> NavigateToAsync()
         {
@@ -37,9 +64,33 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             });
         }
 
-        public void Login()
+        public async void Login()
         {
+            try
+            {
+                var api = RestService.For<IUserApi>(Constants.ServerUri);
+                var user = await api.GetUserAsync(_name,_password);
+                if (user == null)
+                    return;
 
+                _eventAggregator.PublishOnUIThread(new UserLoggedInEvent(user));
+
+            }
+            catch { }
+        }
+
+        public async void Register()
+        {
+            try
+            {
+                var user = new UserModel { Name = _name, Password = _password, Image = Utils.ImageToBytes(null) };
+                var api = RestService.For<IUserApi>(Constants.ServerUri);
+                var resultUser = await api.CreateUserAsync(user);
+                if (resultUser != null)
+                    _eventAggregator.PublishOnUIThread(new UserRegisterEvent(user));
+
+            }
+            catch { }
         }
     }
 }
