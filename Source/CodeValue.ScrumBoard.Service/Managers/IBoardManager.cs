@@ -10,6 +10,7 @@ namespace CodeValue.ScrumBoard.Service.Managers
     {
         IEnumerable<Board> GetBoards();
         Task<Board> CreateBoardAsync(NewBoardDetails board);
-        Task<UpdateResult> UpdateBoardAsync(Board board);
+        Task<bool> UpdateBoardAsync(NewBoardDetails board);
+        Task<bool> RemoveBoardAsync(string boardId);
     }
 }

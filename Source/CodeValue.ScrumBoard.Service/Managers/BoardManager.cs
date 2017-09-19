@@ -15,19 +15,23 @@ namespace CodeValue.ScrumBoard.Service.Managers
         //{
         //    var filter = Builders<BsonDocument>.Filter.Eq("_id", ObjectId.Parse("59bfffd8d0ab4e2ecce43392"));
         //    var update = Builders<BsonDocument>.Update.Set("count", "one one").Set("type", "two two");
-
         //    await _collection.UpdateOneAsync(filter, update);
-
         //}
 
-        public async Task<UpdateResult> UpdateBoardAsync(Board board)
+        public async Task<bool> UpdateBoardAsync(NewBoardDetails board)
         {
-            var filter = Builders<Board>.Filter.Eq("Id", board.Id);
-            var update = Builders<Board>.Update.Set("Name", board.Name)
-                .Set("Description", board.Description);
+            ObjectId boardObjectId;
+            bool result = false;
+            if (ObjectId.TryParse(board.Id, out boardObjectId))
+            {
+                var filter = Builders<Board>.Filter.Eq("Id", boardObjectId);
+                var update = Builders<Board>.Update.Set("Name", board.Name)
+                    .Set("Description", board.Description);
 
-            var collection = GetBoardsCollection();
-            UpdateResult result = await collection.UpdateOneAsync(filter, update);
+                var collection = GetBoardsCollection();
+                await collection.UpdateOneAsync(filter, update);
+                result = true;
+            }
             return result;
         }
 
@@ -43,25 +47,48 @@ namespace CodeValue.ScrumBoard.Service.Managers
                 Name = board.Name,
                 Version = 1,
             };
-
             await boardCollection.InsertOneAsync(newBoard);
+           
             return newBoard;
         }
 
         public IEnumerable<Board> GetBoards()
         {
             var dbBoardsCollection = GetBoardsCollection();
-            var collection = dbBoardsCollection.Find(Builders<Board>.Filter.Empty).ToList();
+            //TODO: Handle enumerable//
+            var collection = dbBoardsCollection.Find(Builders<Board>.Filter.Empty).ToEnumerable();
 
             return collection;
+        }
+
+        public async Task<bool> RemoveBoardAsync(string boardId)
+        {
+            bool status = false;
+            if (boardId == null)
+            {
+                throw new System.ArgumentNullException(nameof(boardId));
+            }       
+
+            var boardCollection = GetBoardsCollection();
+            ObjectId boardObjectId;
+            ;
+            if (ObjectId.TryParse(boardId, out boardObjectId))
+            {
+                await boardCollection.FindOneAndDeleteAsync(Builders<Board>.Filter.Eq("Id", boardObjectId));
+                status = true;
+            }
+            return status;
         }
 
         private IMongoCollection<Board> GetBoardsCollection()
         {
+            string dataBase = "scrumboard";
             var client = new MongoClient(_connectionString);
-            var database = client.GetDatabase("scrumboard");
+            var database = client.GetDatabase(dataBase);
             var collection = database.GetCollection<Board>(DbCollections.Boards);
             return collection;
         }
+
+
     }
 }
