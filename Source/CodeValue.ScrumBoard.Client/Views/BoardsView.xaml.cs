@@ -10,17 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Shell;
 
 namespace CodeValue.ScrumBoard.Client.Views
 {
     /// <summary>
-    /// Interaction logic for MainView.xaml
+    /// Interaction logic for BoardView.xaml
     /// </summary>
-    public partial class MainView : Window
+    public partial class BoardsView : UserControl
     {
-        public MainView()
+        public BoardsView()
         {
             InitializeComponent();
         }

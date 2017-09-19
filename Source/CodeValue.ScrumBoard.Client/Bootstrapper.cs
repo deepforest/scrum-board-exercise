@@ -9,13 +9,14 @@ using System.Windows;
 using CodeValue.ScrumBoard.Client.ViewModels;
 using System.IO;
 using System.Reflection;
+using CodeValue.ScrumBoard.Client.Modules;
 
 namespace CodeValue.ScrumBoard.Client
 {
     internal class Bootstrapper : BootstrapperBase
     {
         private const string ModuleSearchPattern = "*.exe";
-        private const string ModuleFilePrefix = "CodeValue.ScrumBoard";
+        private const string ModuleFilePrefix = "CodeValue.ScrumBoard.Client";
 
         private IContainer _container;
 
@@ -28,10 +29,15 @@ namespace CodeValue.ScrumBoard.Client
             builder.RegisterType<WindowManager>().As<IWindowManager>().SingleInstance();
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 
+            // Register modules.
+            builder.RegisterModule<LoggingModule>();
+
             RegisterViewModels(builder);
 
            _container = builder.Build();
         }
+
+        private Assembly ThisAssembly => Assembly.GetExecutingAssembly();
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
@@ -72,16 +78,14 @@ namespace CodeValue.ScrumBoard.Client
             return files;
         }
 
-      
-
-        private static void RegisterViewModels(ContainerBuilder builder)
+        private void RegisterViewModels(ContainerBuilder builder)
         {
-            builder.RegisterType<MainViewModel>().SingleInstance();
-          
+            builder
+                .RegisterTypes(ThisAssembly
+                    .GetTypes()
+                    .Where(x => x.Name.EndsWith("ViewModel"))
+                    .ToArray())
+                .AsSelf();
         }
-
-      
-
     }
-
 }

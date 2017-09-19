@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public class LoginViewModel
+    public class LoginViewModel :Screen
     {
         private string _password;
         public string Password
