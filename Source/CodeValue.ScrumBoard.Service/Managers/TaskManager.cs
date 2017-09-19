@@ -2,7 +2,6 @@ using CodeValue.ScrumBoard.Service.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
-
 using CodeValue.ScrumBoard.Service.DTOs;
 using MongoDB.Driver;
 using CodeValue.ScrumBoard.Service.Entities;
