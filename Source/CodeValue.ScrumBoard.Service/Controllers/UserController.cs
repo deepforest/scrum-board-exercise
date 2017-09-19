@@ -1,4 +1,5 @@
-﻿using CodeValue.ScrumBoard.Service.Entities;
+﻿using CodeValue.ScrumBoard.Service.DTOs;
+using CodeValue.ScrumBoard.Service.Entities;
 using CodeValue.ScrumBoard.Service.Managers;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Service.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class UserController : Controller
     {
@@ -21,8 +23,8 @@ namespace CodeValue.ScrumBoard.Service.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
-        public IActionResult Login([FromBody] dynamic user)
+        [HttpPost("[action]")]
+        public IActionResult Login([FromBody] LoginUser user)
         {
             var manager = new UserManager();
             var userFromDb = manager.GetUsers().FirstOrDefault(u => Equals(u.Name, user.Name) && Equals(u.Secret, user.Password));
@@ -34,7 +36,7 @@ namespace CodeValue.ScrumBoard.Service.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] User user)
+        public async Task<IActionResult> CreateUser([FromBody] NewUser user)
         {
             var manager = new UserManager();
             var id = await manager.CreateUser(user);

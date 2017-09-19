@@ -2,6 +2,7 @@ using CodeValue.ScrumBoard.Service.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using CodeValue.ScrumBoard.Service.DTOs;
+using System.Collections.Generic;
 
 namespace CodeValue.ScrumBoard.Service.Managers
 {
@@ -56,6 +57,13 @@ namespace CodeValue.ScrumBoard.Service.Managers
         {
             var tasksCollection = GetCollection<Task>(DbCollections.Tasks);
             var Deletetask = await tasksCollection.DeleteOneAsync(Builders<Task>.Filter.Eq("Id", id));
+        }
+
+        public async System.Threading.Tasks.Task<IEnumerable<Task>> GetAllTasks(string boardId)
+        {
+            var tasksCollection = GetCollection<Task>(DbCollections.Tasks);
+            var tasks = await tasksCollection.FindAsync(_ => true);
+            return tasks.ToList();
         }
 
         private static IMongoCollection<T> GetCollection<T>(string collectionName)
