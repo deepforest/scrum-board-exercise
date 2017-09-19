@@ -82,6 +82,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Apis\IBoardApi.cs" />
+    <Compile Include="Apis\ITaskApi.cs" />
     <Compile Include="Apis\IUserApi.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Events\TaskSelectedPayload.cs" />

@@ -36,14 +36,6 @@ namespace CodeValue.ScrumBoard.Service.Controllers
             }
         }
 
-        //[HttpGet("{boardId}")]
-        //public async Board GetBoard([FromQuery] string boardId)
-        //{
-        //    var tasksManager = new TaskManager();
-        //    var tasks = await tasksManager.GetAllTasks(boardId);
-        //    return Ok(tasks);
-        //}
-
         [HttpPost]
         public async Task<NewBoardDetails> CreateBoard([FromBody] NewBoardDetails newBoard)
         {
