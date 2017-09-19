@@ -24,7 +24,7 @@ namespace CodeValue.ScrumBoard.Service.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult Login([FromBody] dynamic user)
+        public IActionResult Login([FromBody] LoginUser user)
         {
             var manager = new UserManager();
             var userFromDb = manager.GetUsers().FirstOrDefault(u => Equals(u.Name, user.Name) && Equals(u.Secret, user.Password));
