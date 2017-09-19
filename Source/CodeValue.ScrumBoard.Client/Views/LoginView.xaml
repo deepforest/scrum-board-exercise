@@ -6,17 +6,23 @@
              xmlns:local="clr-namespace:CodeValue.ScrumBoard.Client.Views"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             Width="240" Height="300">
 
-    <Border Background="White" BorderThickness="2" BorderBrush="AliceBlue" CornerRadius="6">
+    <Border Background="White" BorderThickness="2" BorderBrush="AliceBlue" CornerRadius="2" Padding="16">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="5" ShadowDepth="1" Color="Gray" />
+        </Border.Effect>
+        
         <StackPanel>
-
             <TextBlock  Text="User Name" Padding="10" HorizontalAlignment="Left" />
             <TextBox Text="{Binding UserName}" HorizontalAlignment="Stretch" Padding="10" />
             <TextBlock  Text="Password" Padding="10" HorizontalAlignment="Left"/>
             <PasswordBox   HorizontalAlignment="Stretch" Padding="10" />
-            <Button  Content="Login" HorizontalAlignment="Center" Padding="15" cal:Message.Attach="[Event Click] = [Action Login()]" />
-            <Button  Content="Register" HorizontalAlignment="Center" Padding="15" cal:Message.Attach="[Event Click] = [Action Register()]"/>
+            <WrapPanel HorizontalAlignment="Center" Margin="0,16,0,0">
+                <Button Height="30" Margin="0,16,4,0" Width="80" Content="Login" HorizontalAlignment="Center" cal:Message.Attach="[Event Click] = [Action Login()]" />
+                <Button Height="30" Margin="4,16,0,0" Width="80" Content="Register" HorizontalAlignment="Center" cal:Message.Attach="[Event Click] = [Action Register()]"/>
+            </WrapPanel>
         </StackPanel>
     </Border>
 </UserControl>
