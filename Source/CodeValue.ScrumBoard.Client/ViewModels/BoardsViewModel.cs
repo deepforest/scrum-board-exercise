@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using CodeValue.ScrumBoard.Client.Models;
+using CodeValue.ScrumBoard.Client.Navigation;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
