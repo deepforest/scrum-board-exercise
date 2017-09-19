@@ -16,7 +16,9 @@ using System.Windows.Media.Imaging;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public sealed class MainViewModel : Conductor<INavigation>.Collection.OneActive                                      
+    public sealed class MainViewModel : Conductor<INavigation>.Collection.OneActive,
+                                        IHandle<UserLoggedInEvent>,
+                                        IHandle<UserLoggedOutEvent>
     {
 
         private WindowState _currentWindowState;
@@ -24,6 +26,8 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         private Visibility _progressBarVisibility;
 
         private Func<ILoginViewModel> _loginViewModelCreator;
+        private Func<IBoardsViewModel> _boardViewModelCreator;
+        private Func<ITaskViewModel> _taskViewModelCreator;
 
         private string _currentUserName;
         private ImageSource _userImage;
@@ -31,11 +35,15 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
      
                      
         public MainViewModel(IEventAggregator eventAggregator,                                                           
-                            Func<ILoginViewModel> loginViewModelCreator                                                       )
+                            Func<ILoginViewModel> loginViewModelCreator,
+                            Func<IBoardsViewModel> boardViewModelCreator,
+                            Func<ITaskViewModel> taskViewModelCreator)
         {
             _progressBarVisibility = Visibility.Collapsed;
             eventAggregator.Subscribe(this);
             _loginViewModelCreator = loginViewModelCreator;
+            _boardViewModelCreator = boardViewModelCreator;
+            _taskViewModelCreator = taskViewModelCreator;
 
             Items.AddRange(new INavigation[]
             {               
@@ -101,10 +109,10 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
          protected override void OnInitialize()
          { 
              ActiveItem = Items.First(); 
-         } 
+         }
 
+        #region WINDOW STATE FUNCTIONS
 
-      
         public void CloseWindow()
         {
             TryClose();
@@ -125,6 +133,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             CurrentWindowState = WindowState.Normal;
         }
 
+#endregion
         private async void Navigate(INavigation navigation)
         {
             try
@@ -139,8 +148,25 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             }
         }
 
-      
+        #region  PUB-SUB Handles
+        public void Handle(UserLoggedInEvent message)
+        {
+            try
+            {
+                Navigate(_boardViewModelCreator());
+            }
+            catch { }
+        }
 
-    
+        public void Handle(UserLoggedOutEvent message)
+        {
+            try
+            {
+                Navigate(_loginViewModelCreator());
+            }
+            catch { }
+        }
+
+#endregion
     }
 }

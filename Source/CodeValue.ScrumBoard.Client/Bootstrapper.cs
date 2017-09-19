@@ -79,7 +79,9 @@ namespace CodeValue.ScrumBoard.Client
         private static void RegisterViewModels(ContainerBuilder builder)
         {
             builder.RegisterType<MainViewModel>().SingleInstance();                      
-            builder.RegisterType<LoginViewModel>().As<ILoginViewModel>();                    
+            builder.RegisterType<LoginViewModel>().As<ILoginViewModel>();
+            builder.RegisterType<BoardsViewModel>().As<IBoardsViewModel>();
+            builder.RegisterType<TaskViewModel>().As<ITaskViewModel>();
         }
 
       
