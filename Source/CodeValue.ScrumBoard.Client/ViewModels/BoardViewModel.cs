@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using CodeValue.ScrumBoard.Client.Apis;
+using CodeValue.ScrumBoard.Client.Events;
 using CodeValue.ScrumBoard.Client.Models;
 using CodeValue.ScrumBoard.Client.Navigation;
 using Refit;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    class BoardViewModel : INavigation
+    class BoardViewModel : INavigation<BoardActivePayload>
     {
         public BoardViewModel()
         {
@@ -32,17 +33,18 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         public IObservableCollection<TaskItemViewModel> DoingTasks { get; private set; }
         public IObservableCollection<TaskItemViewModel> DoneTasks { get; private set; }
 
-        public async Task<bool> NavigateToAsync(string boardId)
+        public async Task<bool> NavigateToAsync(BoardActivePayload payload)
         {
-            var tasks = await GetAllBoardTasksAsync(boardId);
+            var tasks = await GetAllBoardTasksAsync(payload.BoardId);
+            //BoardName = await GetBoardName(payload.BoardId);
             var taskVMs = tasks.Select(i => new TaskItemViewModel());
             TodoTasks.Clear();
             DoingTasks.Clear();
             DoneTasks.Clear();
-
             TodoTasks.AddRange(taskVMs.Where(x => x.Status == TaskModelStatus.Todo));
             DoingTasks.AddRange(taskVMs.Where(x => x.Status == TaskModelStatus.Doing));
             DoneTasks.AddRange(taskVMs.Where(x => x.Status == TaskModelStatus.Done));
+            return true;
         }
 
         private async Task<IEnumerable<TaskModel>> GetAllBoardTasksAsync(string boardId)
