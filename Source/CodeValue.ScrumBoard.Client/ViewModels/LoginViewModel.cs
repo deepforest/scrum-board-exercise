@@ -8,7 +8,7 @@ using CodeValue.ScrumBoard.Client.Navigation;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public class LoginViewModel :Screen, ILoginViewModel
+    public class LoginViewModel : Screen, ILoginViewModel
     {
         private string _password;
         public string Password
@@ -30,7 +30,16 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         public async Task<bool> NavigateToAsync()
         {
-            return await Task.Run(()=>{ return true; });            
+            return await Task.Run(() =>
+            {
+
+                return true;
+            });
+        }
+
+        public void Login()
+        {
+
         }
     }
 }
