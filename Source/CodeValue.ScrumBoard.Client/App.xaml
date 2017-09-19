@@ -45,7 +45,7 @@
                 <Menu Grid.Row="0" Grid.Column="2">
                     <MenuItem Header="...">
                         <MenuItem Header="Open" />
-                        <MenuItem Header="Edit" cal:Message.Attach="[Event Click] = [Action BoardDotsMenu()]"/>
+                        <MenuItem Header="Edit" cal:Message.Attach="[Event Click] = [Action OpenBoard($DataContext)]"/>
                         <MenuItem Header="Delete"/>
                     </MenuItem>
                 </Menu>

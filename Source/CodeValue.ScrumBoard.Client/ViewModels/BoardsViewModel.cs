@@ -7,16 +7,18 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CodeValue.ScrumBoard.Client.Events;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
     public class BoardsViewModel : Screen , IBoardsViewModel<object>
     {
         private readonly ObservableCollection<Board> _BoardsCollection;
+        private readonly IEventAggregator _eventAggregator;
 
-        public BoardsViewModel()
+        public BoardsViewModel(IEventAggregator eventAggregator)
         {
-            
+            _eventAggregator = eventAggregator;
         }
 
        
@@ -29,6 +31,11 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         public async Task<bool> NavigateToAsync(object args)
         {
             return await Task.Run(() => { return true; });
+        }
+
+        public void OpenBoard(BoardItemViewModel boardItem)
+        {
+            _eventAggregator.PublishOnUIThread(new BoardActivePayload());
         }
     }
 }
