@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="http://www.caliburnproject.org"
              xmlns:local="clr-namespace:CodeValue.ScrumBoard.Client.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -16,7 +17,9 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox Text="{Binding BoardName}" Grid.Row="0" Grid.Column="0"/>
+        <TextBox Text="{Binding BoardName}" 
+                 Grid.Row="0" Grid.Column="0"
+                 Grid.ColumnSpan="2"/>
         <Grid Grid.Row="1" Grid.Column="0"
               x:Name="TodoGrid" Margin="5"
               Background="LightGray" 
@@ -31,13 +34,12 @@
                      Background="Transparent" />
             <Button Grid.Row="0" Content="+" 
                     Width="20" HorizontalAlignment="Right" 
-                    BorderThickness="0" Background="Transparent"/>
+                    BorderThickness="0" Background="Transparent"
+                    cal:Message.Attach="CreateTask"/>
             <ItemsControl Grid.Row="1" x:Name="TodoList"
-                     Background="Transparent"
-                     HorizontalContentAlignment="Stretch">
-                <!--<ListBox.ItemTemplate>
-                    Hamam's Code
-                </ListBox.ItemTemplate>-->
+                          ItemsSource="{Binding TodoTasks}" 
+                          Background="Transparent"
+                          HorizontalContentAlignment="Stretch">
             </ItemsControl>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="1" 
@@ -52,11 +54,9 @@
             <TextBox Grid.Row="0"
                      Text="Doing"
                      Background="Transparent" />
-            <ItemsControl Grid.Row="1" Background="Transparent"
-                     HorizontalContentAlignment="Stretch">
-                <!--<ListBox.ItemTemplate>
-                    Hamam's Code
-                </ListBox.ItemTemplate>-->
+            <ItemsControl ItemsSource="{Binding DoingTasks}" 
+                          Grid.Row="1" Background="Transparent"
+                          HorizontalContentAlignment="Stretch">
             </ItemsControl>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="2"
@@ -72,10 +72,8 @@
                      Text="Done"
                      Background="Transparent" />
             <ItemsControl Grid.Row="1" Background="Transparent"
-                     HorizontalContentAlignment="Stretch">
-                <!--<ListBox.ItemTemplate>
-                    Hamam's Code
-                </ListBox.ItemTemplate>-->
+                          ItemsSource="{Binding DoneTasks}" 
+                          HorizontalContentAlignment="Stretch">
             </ItemsControl>
         </Grid>
     </Grid>
