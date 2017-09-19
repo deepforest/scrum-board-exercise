@@ -12,5 +12,6 @@ namespace CodeValue.ScrumBoard.Client.Events
     public class BoardActivePayload
     {
         public string BoardId { get; set; }
+        public string BoardName { get; set; }
     }
 }

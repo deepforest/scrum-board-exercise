@@ -2,66 +2,66 @@ using CodeValue.ScrumBoard.Service.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using CodeValue.ScrumBoard.Service.DTOs;
+using System.Threading.Tasks;
+using CodeValue.ScrumBoard.Service.Infrastructure;
+using System;
 using System.Collections.Generic;
 
 namespace CodeValue.ScrumBoard.Service.Managers
 {
     public class TaskManager : ITaskManager
     {
-        public async System.Threading.Tasks.Task<NewTaskResponse> CreateTaskAsync(NewTaskDetailsRequest newTaskDetailsRequest)
+        public async Task<string> CreateTask(NewTask newTask)
         {
-            var client = new MongoClient("mongodb://localhost:27017");
-            var tasksDatabase = client.GetDatabase("scrumboard");
-            var tasksCollection = tasksDatabase.GetCollection<Task>(DbCollections.Tasks);
-            //TODO:: ID NOT ASSIGNED!!
-            Task newTaskToAdd = new Task
+            var task = new Entities.Task()
             {
-                CreationTimeUtc = System.DateTime.UtcNow,
+                CreationTimeUtc = DateTime.UtcNow,
                 Version = 1,
-                Description = newTaskDetailsRequest.Description,
-                CreatedBy = "Tomer shamam",
-                AssignedTo = newTaskDetailsRequest.AssignedTo,
-                Priority = newTaskDetailsRequest.Priority,
-                RemainingWork = newTaskDetailsRequest.RemainingWork,
-                Status = TaskStatus.Todo,
+                CreatedBy = newTask.CreatedBy,
+                AssignedTo = newTask.AssignedTo,
+                Description = newTask.Description,
+                Priority = newTask.Priority,
+                RemainingWork = newTask.RemainingWork,
+                Status = Entities.TaskStatus.Todo
             };
-            await tasksCollection.InsertOneAsync(newTaskToAdd);
-            var returnedTaskResponse = new NewTaskResponse
-            {
-                Name = newTaskToAdd.Id.ToString(),
-                Status = newTaskToAdd.Status
-            };
-            return returnedTaskResponse;
+            var mongoCollection = DBHelper.GetCollection<Entities.Task>(DbCollections.Tasks);
+            await mongoCollection.InsertOneAsync(task);
+            return task.Id.ToString();
         }
 
-        public async System.Threading.Tasks.Task<bool> UpdateTaskAsync(string taskId, Task fildesToUpdate)
+        public async Task<bool> UpdateTask(UpdateTask updateTask)
         {
-            var client = new MongoClient("mongodb://localhost:27017");
-            var tasksDatabase = client.GetDatabase("scrumboard");
-            var tasksCollection = tasksDatabase.GetCollection<Task>(DbCollections.Tasks);
-            var update = MongoDB.Driver.Builders<Task>.Update
-                .Set(task => task.Description, fildesToUpdate?.Description)
-                .Set(task => task.CreationTimeUtc, fildesToUpdate?.CreationTimeUtc)
-                .Set(task => task.AssignedTo, fildesToUpdate?.AssignedTo)
-                .Set(task => task.Comments, fildesToUpdate?.Comments)
-                .Set(task => task.CreatedBy, fildesToUpdate?.CreatedBy)
-                .Set(task => task.Priority, fildesToUpdate?.Priority)
-                .Set(task => task.RemainingWork, fildesToUpdate?.RemainingWork)
-                .Set(task => task.Status, fildesToUpdate?.Status)
-                .Set(task => task.Version, fildesToUpdate?.Version);
-            await tasksCollection.UpdateManyAsync<Task>(taskFilter => taskFilter.Id.ToString() == taskId, update);
+
+            var mongoCollection = DBHelper.GetCollection<Entities.Task>(DbCollections.Tasks);
+            var filter = Builders<BsonDocument>.Filter.Eq(nameof(updateTask.Id), updateTask.Id);
+            var update = Builders<BsonDocument>.Update;
+            if (updateTask.Priority != null)
+                update.Set(nameof(updateTask.Priority), updateTask.Priority);
+            if (updateTask.AssignedTo != null)
+                update.Set(nameof(updateTask.AssignedTo), updateTask.AssignedTo);
+            if (updateTask.Description != null)
+                update.Set(nameof(updateTask.Description), updateTask.Description);
+            if (updateTask.Status != null)
+                update.Set(nameof(updateTask.Status), updateTask.Status);
+            if (updateTask.RemainingWork != null)
+                update.Set(nameof(updateTask.RemainingWork), updateTask.RemainingWork);
+            if (updateTask.Description != null)
+                update.Set(nameof(updateTask.Description), updateTask.Description);
+            if (updateTask.Description != null)
+                update.Set(nameof(updateTask.Description), updateTask.Description);
+            //await mongoCollection.UpdateOneAsync()
             return true;
         }
 
         public async System.Threading.Tasks.Task DeleteTask(ObjectId id)
         {
-            var tasksCollection = GetCollection<Task>(DbCollections.Tasks);
-            var Deletetask = await tasksCollection.DeleteOneAsync(Builders<Task>.Filter.Eq("Id", id));
+            var tasksCollection = GetCollection<Entities.Task>(DbCollections.Tasks);
+            var Deletetask = await tasksCollection.DeleteOneAsync(Builders<Entities.Task>.Filter.Eq("Id", id));
         }
 
-        public async System.Threading.Tasks.Task<IEnumerable<Task>> GetAllTasks(string boardId)
+        public async System.Threading.Tasks.Task<IEnumerable<Entities.Task>> GetAllTasks(string boardId)
         {
-            var tasksCollection = GetCollection<Task>(DbCollections.Tasks);
+            var tasksCollection = GetCollection<Entities.Task>(DbCollections.Tasks);
             var tasks = await tasksCollection.FindAsync(_ => true);
             return tasks.ToList();
         }
@@ -72,6 +72,12 @@ namespace CodeValue.ScrumBoard.Service.Managers
             var server = db.GetDatabase("scrumboard");
             var collection = server.GetCollection<T>(collectionName);
             return collection;
+        }
+
+        public IEnumerable<Entities.Task> GetTasks()
+        {
+            var mongoCollection = DBHelper.GetCollection<Entities.Task>(DbCollections.Tasks);
+            return mongoCollection.Find(Builders<Entities.Task>.Filter.Empty).ToList();
         }
     }
 }

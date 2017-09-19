@@ -21,14 +21,18 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             DoingTasks = new BindableCollection<TaskItemViewModel>();
             DoneTasks = new BindableCollection<TaskItemViewModel>();
         }
+        
+        public async Task CreateTask()
+        {
+
+        }
 
         public string BoardName
         {
             get;
-            set;
+            private set;
         }
 
-        // has add range BindableCollection
         public IObservableCollection<TaskItemViewModel> TodoTasks { get; private set; }
         public IObservableCollection<TaskItemViewModel> DoingTasks { get; private set; }
         public IObservableCollection<TaskItemViewModel> DoneTasks { get; private set; }
@@ -36,7 +40,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         public async Task<bool> NavigateToAsync(BoardActivePayload payload)
         {
             var tasks = await GetAllBoardTasksAsync(payload.BoardId);
-            //BoardName = await GetBoardName(payload.BoardId);
+            BoardName = payload.BoardName;
             var taskVMs = tasks.Select(i => new TaskItemViewModel());
             TodoTasks.Clear();
             DoingTasks.Clear();

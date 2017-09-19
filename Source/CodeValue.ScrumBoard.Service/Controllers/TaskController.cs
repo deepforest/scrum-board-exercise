@@ -3,6 +3,7 @@ using CodeValue.ScrumBoard.Service.Entities;
 using CodeValue.ScrumBoard.Service.Managers;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Service.Controllers
 {
@@ -26,18 +27,27 @@ namespace CodeValue.ScrumBoard.Service.Controllers
         }
 
         [HttpPost]
-        public async System.Threading.Tasks.Task<NewTaskResponse> CreateNewTaskAsync([FromBody] NewTaskDetailsRequest newTaskDetailsRequest)
+        public async Task<IActionResult> CreateTask([FromBody]NewTask task)
         {
-            var taskManager = new TaskManager();
-            var taskResponse = await taskManager.CreateTaskAsync(newTaskDetailsRequest);
-            return taskResponse;// TODO:: return CreatRoute
+            var manager = new TaskManager();
+            var id = await manager.CreateTask(task);
+            if (id == null)
+            {
+                return NotFound();
+            }
+            return Ok(id);
         }
 
-        public async System.Threading.Tasks.Task<bool> UpdateExistTaskAsync(string taskId, Task fildesToUpdate)
+        [HttpPost]
+        public async Task<IActionResult> UpdateTask([FromBody]UpdateTask task)
         {
-            var taskManager = new TaskManager();
-            var updateTaskResul = await taskManager.UpdateTaskAsync(taskId, fildesToUpdate);
-            return updateTaskResul;
+            var manager = new TaskManager();
+            var IsExist = await manager.UpdateTask(task);
+            if (!IsExist)
+            {
+                return NotFound();
+            }
+            return Ok();
         }
     }
 }
