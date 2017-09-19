@@ -19,7 +19,9 @@
         <TextBox Text="{Binding BoardName}" Grid.Row="0" Grid.Column="0"/>
         <Grid Grid.Row="1" Grid.Column="0"
               x:Name="TodoGrid" Margin="5"
-              Background="LightGray">
+              Background="LightGray" 
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"/>
                 <RowDefinition/>
@@ -40,7 +42,9 @@
         </Grid>
         <Grid Grid.Row="1" Grid.Column="1" 
               x:Name="DoingGrid" Margin="5"
-              Background="LightGray">
+              Background="LightGray"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"/>
                 <RowDefinition/>
@@ -57,7 +61,9 @@
         </Grid>
         <Grid Grid.Row="1" Grid.Column="2"
               x:Name="DoneGrid" Margin="5"
-              Background="LightGray">
+              Background="LightGray"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"/>
                 <RowDefinition/>

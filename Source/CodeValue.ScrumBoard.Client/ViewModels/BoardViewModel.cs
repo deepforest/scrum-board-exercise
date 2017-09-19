@@ -21,6 +21,12 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             DoneTasks = new BindableCollection<TaskItemViewModel>();
         }
 
+        public string BoardName
+        {
+            get;
+            set;
+        }
+
         // has add range BindableCollection
         public IObservableCollection<TaskItemViewModel> TodoTasks { get; private set; }
         public IObservableCollection<TaskItemViewModel> DoingTasks { get; private set; }
