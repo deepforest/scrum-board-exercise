@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CodeValue.ScrumBoard.Service.Entities
+namespace CodeValue.ScrumBoard.Service.Infrastructure
 {
     public static class DBHelper
     {
         public const string ConnectionString = "mongodb://localhost:27017";
         public const string DBName = "scrumboard";
+
         public static IMongoCollection<T> GetCollection<T>(string collectionName)
         {
             var db = new MongoClient(ConnectionString);
