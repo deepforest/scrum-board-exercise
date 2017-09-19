@@ -9,6 +9,8 @@ using System.Windows;
 using CodeValue.ScrumBoard.Client.ViewModels;
 using System.IO;
 using System.Reflection;
+using CodeValue.ScrumBoard.Client.Common;
+using CodeValue.ScrumBoard.Client.Navigation;
 
 namespace CodeValue.ScrumBoard.Client
 {
@@ -76,11 +78,10 @@ namespace CodeValue.ScrumBoard.Client
 
         private static void RegisterViewModels(ContainerBuilder builder)
         {
-            builder.RegisterType<MainViewModel>().SingleInstance();
-            // TODO: add title to consts
-            builder.RegisterType<TitleBarViewModel>().WithParameter("title","Virtual Scrum Board");
-            builder.RegisterType<LoginViewModel>();
-
+            builder.RegisterType<MainViewModel>().SingleInstance();                      
+            builder.RegisterType<LoginViewModel>().As<ILoginViewModel>();
+            builder.RegisterType<BoardsViewModel>().As<IBoardsViewModel>();
+            builder.RegisterType<TaskViewModel>().As<ITaskViewModel>();
         }
 
       
