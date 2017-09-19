@@ -33,22 +33,22 @@ namespace CodeValue.ScrumBoard.Service.Managers
         {
 
             var mongoCollection = DBHelper.GetCollection<Entities.Task>(DbCollections.Tasks);
-            var filter = Builders<BsonDocument>.Filter.Eq(nameof(updateTask.Id), updateTask.Id);
-            var update = Builders<BsonDocument>.Update;
+            var filter = Builders<Entities.Task>.Filter.Eq(nameof(updateTask.Id), updateTask.Id);
+            var update = Builders<Entities.Task>.Update.Set(nameof(updateTask.Id), updateTask.Id);
+
             if (updateTask.Priority != null)
-                update.Set(nameof(updateTask.Priority), updateTask.Priority);
+                update = update.Set(nameof(updateTask.Priority), updateTask.Priority);
             if (updateTask.AssignedTo != null)
-                update.Set(nameof(updateTask.AssignedTo), updateTask.AssignedTo);
+                update = update.Set(nameof(updateTask.AssignedTo), updateTask.AssignedTo);
             if (updateTask.Description != null)
-                update.Set(nameof(updateTask.Description), updateTask.Description);
+                update = update.Set(nameof(updateTask.Description), updateTask.Description);
             if (updateTask.Status != null)
-                update.Set(nameof(updateTask.Status), updateTask.Status);
+                update = update.Set(nameof(updateTask.Status), updateTask.Status);
             if (updateTask.RemainingWork != null)
-                update.Set(nameof(updateTask.RemainingWork), updateTask.RemainingWork);
-            if (updateTask.Description != null)
-                update.Set(nameof(updateTask.Description), updateTask.Description);
-            if (updateTask.Description != null)
-                update.Set(nameof(updateTask.Description), updateTask.Description);
+                update = update.Set(nameof(updateTask.RemainingWork), updateTask.RemainingWork);
+            if (updateTask.Comments != null)
+                update = update.Set(nameof(updateTask.Comments), updateTask.Comments);
+            var result = await mongoCollection.UpdateOneAsync(filter, update);
             //await mongoCollection.UpdateOneAsync()
             return true;
         }
