@@ -1,4 +1,9 @@
-﻿using CodeValue.ScrumBoard.Client.Models;
+﻿using Caliburn.Micro;
+using CodeValue.ScrumBoard.Client.Apis;
+using CodeValue.ScrumBoard.Client.Events;
+using CodeValue.ScrumBoard.Client.Models;
+using CodeValue.ScrumBoard.Client.Navigation;
+using Refit;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,35 +13,52 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    class BoardViewModel
+    class BoardViewModel : INavigation<BoardActivePayload>
     {
         public BoardViewModel()
         {
-            TodoTasks = new ObservableCollection<TaskModel>();
-            DoingTasks = new ObservableCollection<TaskModel>();
-            DoneTasks = new ObservableCollection<TaskModel>();
+            TodoTasks = new BindableCollection<TaskItemViewModel>();
+            DoingTasks = new BindableCollection<TaskItemViewModel>();
+            DoneTasks = new BindableCollection<TaskItemViewModel>();
         }
 
-        public ObservableCollection<TaskModel> TodoTasks { get; private set; }
-        public ObservableCollection<TaskModel> DoingTasks { get; private set; }
-        public ObservableCollection<TaskModel> DoneTasks { get; private set; }
+        public string BoardName
+        {
+            get;
+            set;
+        }
 
-        //public async Task GetAllStudentsAsync()
-        //{
-        //    try
-        //    {
-        //        var api = RestService.For<IBoardApi>("http://localhost:61151/api");
-        //        var tasks = await api.GetBoardTasksAsync();
-        //        if (tasks == null)
-        //            return;
+        // has add range BindableCollection
+        public IObservableCollection<TaskItemViewModel> TodoTasks { get; private set; }
+        public IObservableCollection<TaskItemViewModel> DoingTasks { get; private set; }
+        public IObservableCollection<TaskItemViewModel> DoneTasks { get; private set; }
 
-        //        //foreach (var student in students)
-        //        //    Students.Add(student);
-        //    }
-        //    catch (Exception ex)
-        //    {
+        public async Task<bool> NavigateToAsync(BoardActivePayload payload)
+        {
+            var tasks = await GetAllBoardTasksAsync(payload.BoardId);
+            //BoardName = await GetBoardName(payload.BoardId);
+            var taskVMs = tasks.Select(i => new TaskItemViewModel());
+            TodoTasks.Clear();
+            DoingTasks.Clear();
+            DoneTasks.Clear();
+            TodoTasks.AddRange(taskVMs.Where(x => x.Status == TaskModelStatus.Todo));
+            DoingTasks.AddRange(taskVMs.Where(x => x.Status == TaskModelStatus.Doing));
+            DoneTasks.AddRange(taskVMs.Where(x => x.Status == TaskModelStatus.Done));
+            return true;
+        }
 
-        //    }
-        //}
+        private async Task<IEnumerable<TaskModel>> GetAllBoardTasksAsync(string boardId)
+        {
+            try
+            {
+                var api = RestService.For<IBoardApi>("http://localhost:8080/api");
+                var tasks = await api.GetBoardTasksAsync(boardId);
+                return tasks;
+            }
+            catch (Exception ex)
+            {
+                return Enumerable.Empty<TaskModel>();
+            }
+        }
     }
 }

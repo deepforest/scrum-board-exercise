@@ -17,19 +17,19 @@ using System.Windows.Media.Imaging;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public sealed class MainViewModel : Conductor<INavigation>.Collection.OneActive,
-                                        IHandle<UserLoggedInEvent>,
-                                        IHandle<UserLoggedOutEvent>,
-        IHandle<UserRegisterEvent>
+    public sealed class MainViewModel : Conductor<object>.Collection.OneActive,
+                                        IHandle<UserLoggedInPayload>,
+                                        IHandle<UserLoggedOutPayload>,
+        IHandle<UserRegisterPayload>
     {
 
         private WindowState _currentWindowState;
 
         private Visibility _progressBarVisibility;
 
-        private Func<ILoginViewModel> _loginViewModelCreator;
-        private Func<IBoardsViewModel> _boardViewModelCreator;
-        private Func<ITaskViewModel> _taskViewModelCreator;
+        private Func<INavigation<object>> _loginViewModelCreator;
+        private Func<INavigation<object>> _boardsViewModelCreator;
+        private Func<INavigation<object>> _taskViewModelCreator;
 
         private string _currentUserName;
         private ImageSource _userImage;
@@ -37,17 +37,17 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
      
                      
         public MainViewModel(IEventAggregator eventAggregator,                                                           
-                            Func<ILoginViewModel> loginViewModelCreator,
-                            Func<IBoardsViewModel> boardViewModelCreator,
-                            Func<ITaskViewModel> taskViewModelCreator)
+                            Func<ILoginViewModel<object>> loginViewModelCreator,
+                            Func<IBoardsViewModel<object>> boardViewModelCreator,
+                            Func<ITaskViewModel<object>> taskViewModelCreator)
         {
             _progressBarVisibility = Visibility.Collapsed;
             eventAggregator.Subscribe(this);
             _loginViewModelCreator = loginViewModelCreator;
-            _boardViewModelCreator = boardViewModelCreator;
+            _boardsViewModelCreator = boardViewModelCreator;
             _taskViewModelCreator = taskViewModelCreator;
 
-            Items.AddRange(new INavigation[]
+            Items.AddRange(new INavigation<object>[]
             {               
                loginViewModelCreator() 
             });
@@ -140,12 +140,12 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         #endregion
 
       
-        private async void Navigate<T>(INavigation navigation,T args)
+        private async void Navigate<T>(INavigation<T> navigation,T args)
         {
             try
             {
                 ProgressBarVisibility = Visibility.Visible;
-                if (await navigation.NavigateToAsync<T>(args))
+                if (await navigation.NavigateToAsync(args))
                     ActiveItem = navigation;            
             }
             finally
@@ -155,19 +155,19 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         }
 
         #region  PUB-SUB Handles
-        public void Handle(UserLoggedInEvent message)
+        public void Handle(UserLoggedInPayload message)
         {
             try
             {
                 var userModel = message.UserModel;
                 CurrentUserName = userModel.Name;
                 UserImage = Utils.BytesToImage(userModel.Image);                
-                Navigate<object>(_boardViewModelCreator(),null);
+                Navigate<object>(_boardsViewModelCreator(),null);
             }
             catch { }
         }
 
-        public void Handle(UserLoggedOutEvent message)
+        public void Handle(UserLoggedOutPayload message)
         {
             try
             {
@@ -180,12 +180,12 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             catch { }
         }
 
-        public void Handle(UserRegisterEvent message)
+        public void Handle(UserRegisterPayload message)
         {
             var userModel = message.UserModel;
             CurrentUserName = userModel.Name;
             UserImage = Utils.BytesToImage(userModel.Image);
-            Navigate<object>(_boardViewModelCreator(),null);
+            Navigate<object>(_boardsViewModelCreator(),null);
         }
 
         #endregion

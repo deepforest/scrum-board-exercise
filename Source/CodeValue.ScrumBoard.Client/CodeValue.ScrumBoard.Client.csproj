@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>CodeValue.ScrumBoard.Client</RootNamespace>
     <AssemblyName>CodeValue.ScrumBoard.Client</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -81,8 +81,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Apis\IBoardApi.cs" />
     <Compile Include="Apis\IUserApi.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Events\TaskSelectedPayload.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Modules\LoggingModule.cs" />
     <Compile Include="Common\Constants.cs" />
@@ -91,10 +93,10 @@
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Task.cs" />
-    <Compile Include="Events\BoardActiveEvent.cs" />
-    <Compile Include="Events\UserLoggedInEvent.cs" />
-    <Compile Include="Events\UserLoggedOutEvent.cs" />
-    <Compile Include="Events\UserRegisterEvent.cs" />
+    <Compile Include="Events\BoardActivePayload.cs" />
+    <Compile Include="Events\UserLoggedInPayload.cs" />
+    <Compile Include="Events\UserLoggedOutPayload.cs" />
+    <Compile Include="Events\UserRegisterPayload.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Models\UserModel.cs" />
@@ -102,12 +104,18 @@
     <Compile Include="Navigation\ILoginViewModel.cs" />
     <Compile Include="Navigation\INavigation.cs" />
     <Compile Include="Navigation\ITaskViewModel.cs" />
+    <Compile Include="Navigation\NavigationParameter.cs" />
     <Compile Include="ViewModels\BoardsViewModel.cs" />
+    <Compile Include="ViewModels\BoardViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\TaskItemViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
     <Compile Include="Views\BoardsView.xaml.cs">
       <DependentUpon>BoardsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BoardView.xaml.cs">
+      <DependentUpon>BoardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
@@ -123,6 +131,10 @@
       <DependentUpon>TaskView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\BoardsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\BoardView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -9,6 +9,14 @@ namespace CodeValue.ScrumBoard.Service.Controllers
     [Route("api/[controller]")]
     public class TaskController : Controller
     {
+        [HttpGet("{boardId}")]
+        public async System.Threading.Tasks.Task<IActionResult> GetBoardTasksAsync([FromQuery] string boardId)
+        {
+            var tasksManager = new TaskManager();
+            var tasks = await tasksManager.GetAllTasks(boardId);
+            return Ok(tasks);
+        }
+
         [HttpDelete("{id}")]
         public async System.Threading.Tasks.Task<IActionResult> DeleteTaskAsync(ObjectId id)
         {
