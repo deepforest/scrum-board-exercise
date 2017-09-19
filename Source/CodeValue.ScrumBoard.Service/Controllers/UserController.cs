@@ -10,7 +10,7 @@ namespace CodeValue.ScrumBoard.Service.Controllers
     public class UserController : Controller
     {
         [HttpGet("{id}", Name = nameof(GetUser))]
-        public async Task<IActionResult> GetUser(int id)
+        public IActionResult GetUser(int id)
         {
             var manager = new UserManager();
             var user = manager.GetUsers().FirstOrDefault(u => Equals(u.Id, id));
@@ -22,9 +22,27 @@ namespace CodeValue.ScrumBoard.Service.Controllers
         }
 
         [HttpPost]
+        public IActionResult Login([FromBody] dynamic user)
+        {
+            var manager = new UserManager();
+            var userFromDb = manager.GetUsers().FirstOrDefault(u => Equals(u.Name, user.Name) && Equals(u.Secret, user.Password));
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(userFromDb);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] User user)
         {
-            return Ok();
+            var manager = new UserManager();
+            var id = await manager.CreateUser(user);
+            if (id == null)
+            {
+                return NotFound();
+            }
+            return Ok(id);
         }
     }
 }
