@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public sealed class MainViewModel : Conductor<Screen>.Collection.OneActive                                      
+    public sealed class MainViewModel : Conductor<INavigation>.Collection.OneActive                                      
     {
 
         private WindowState _currentWindowState;
@@ -37,9 +37,9 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             eventAggregator.Subscribe(this);
             _loginViewModelCreator = loginViewModelCreator;
 
-            Items.AddRange(new Screen[]
+            Items.AddRange(new INavigation[]
             {               
-               loginViewModelCreator() as LoginViewModel
+               loginViewModelCreator() 
             });
 
             CurrentWindowState = WindowState.Normal;
@@ -130,7 +130,8 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             try
             {
                 ProgressBarVisibility = Visibility.Visible;
-                ActiveItem = await navigation.NavigateToAsync();            
+                if (await navigation.NavigateToAsync())
+                    ActiveItem = navigation;            
             }
             finally
             {

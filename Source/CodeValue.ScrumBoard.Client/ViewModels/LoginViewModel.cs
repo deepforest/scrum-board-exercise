@@ -28,9 +28,9 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         public string UserName { get; set; }
 
-        public async Task<Screen> NavigateToAsync()
+        public async Task<bool> NavigateToAsync()
         {
-            return await Task.Run(()=>{ return this; });            
+            return await Task.Run(()=>{ return true; });            
         }
     }
 }
