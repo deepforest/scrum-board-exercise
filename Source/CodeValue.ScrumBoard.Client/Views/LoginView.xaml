@@ -7,7 +7,7 @@
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             Width="240" Height="300">
+             Width="240" Height="340">
 
     <Border Background="White" BorderThickness="2" BorderBrush="AliceBlue" CornerRadius="2" Padding="16">
         <Border.Effect>
@@ -23,7 +23,9 @@
                 <Button Height="30" Margin="0,16,4,0" Width="80" Content="Login" HorizontalAlignment="Center" cal:Message.Attach="[Event Click] = [Action Login()]" />
                 <Button Height="30" Margin="4,16,0,0" Width="80" Content="Register" HorizontalAlignment="Center" cal:Message.Attach="[Event Click] = [Action Register()]"/>
             </WrapPanel>
-            
+            <TextBlock Text="Select image:"/>
+            <TextBox Text="{Binding ImagePath}"/>
+            <Button Content="..." cal:Message.Attach="SelectImage()"/>
         </StackPanel>
     </Border>
 </UserControl>
