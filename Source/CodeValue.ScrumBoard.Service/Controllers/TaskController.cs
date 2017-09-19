@@ -1,7 +1,6 @@
 using CodeValue.ScrumBoard.Service.DTOs;
 using CodeValue.ScrumBoard.Service.Entities;
 using CodeValue.ScrumBoard.Service.Managers;
-using CodeValue.ScrumBoard.Service.Managers;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 
@@ -17,6 +16,7 @@ namespace CodeValue.ScrumBoard.Service.Controllers
             await tasksManager.DeleteTask(id);
             return Ok();
         }
+
         [HttpPost]
         public async System.Threading.Tasks.Task<NewTaskResponse> CreateNewTaskAsync([FromBody] NewTaskDetailsRequest newTaskDetailsRequest)
         {

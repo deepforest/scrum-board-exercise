@@ -73,6 +73,10 @@
     </ApplicationDefinition>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Common\Types\WindowStateTypes.cs" />
+    <Compile Include="DTOs\TaskRequestResult.cs" />
+    <Compile Include="Entities\Comment.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Task.cs" />
     <Compile Include="Events\WindowStateChangedEvent.cs" />
     <Compile Include="Modules\LoggingModule.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
