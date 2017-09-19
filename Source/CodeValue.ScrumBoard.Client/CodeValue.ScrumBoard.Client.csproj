@@ -77,6 +77,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Apis\IUserApi.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Common\Constants.cs" />
     <Compile Include="DTOs\TaskRequestResult.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Events\UserRegisterEvent.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\TaskModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Navigation\IBoardsViewModel.cs" />
     <Compile Include="Navigation\ILoginViewModel.cs" />
     <Compile Include="Navigation\INavigation.cs" />
