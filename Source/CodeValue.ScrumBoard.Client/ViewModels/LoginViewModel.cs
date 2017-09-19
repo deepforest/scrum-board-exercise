@@ -14,7 +14,7 @@ using Microsoft.Win32;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public class LoginViewModel : Screen, ILoginViewModel
+    public class LoginViewModel : Screen, ILoginViewModel<object>
     {
         private readonly IEventAggregator _eventAggregator;
         private string _password;
@@ -73,7 +73,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             }
         }
 
-        public async Task<bool> NavigateToAsync<T>(T args)
+        public async Task<bool> NavigateToAsync(object args)
         {
             return await Task.Run(() => { return true; });
         }

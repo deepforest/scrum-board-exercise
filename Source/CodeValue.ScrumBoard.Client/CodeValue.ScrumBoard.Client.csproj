@@ -102,6 +102,7 @@
     <Compile Include="Navigation\ILoginViewModel.cs" />
     <Compile Include="Navigation\INavigation.cs" />
     <Compile Include="Navigation\ITaskViewModel.cs" />
+    <Compile Include="Navigation\NavigationParameter.cs" />
     <Compile Include="ViewModels\BoardsViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
