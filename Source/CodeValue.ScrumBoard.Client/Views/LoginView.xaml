@@ -23,6 +23,7 @@
                 <Button Height="30" Margin="0,16,4,0" Width="80" Content="Login" HorizontalAlignment="Center" cal:Message.Attach="[Event Click] = [Action Login()]" />
                 <Button Height="30" Margin="4,16,0,0" Width="80" Content="Register" HorizontalAlignment="Center" cal:Message.Attach="[Event Click] = [Action Register()]"/>
             </WrapPanel>
+            
         </StackPanel>
     </Border>
 </UserControl>
