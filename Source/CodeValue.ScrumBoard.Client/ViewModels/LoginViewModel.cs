@@ -97,7 +97,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
                 if (resultUser == null)
                     return;
 
-                _eventAggregator.PublishOnUIThread(new UserLoggedInEvent(resultUser));
+                _eventAggregator.PublishOnUIThread(new UserLoggedInPayload(resultUser));
 
             }
             catch { }
@@ -113,7 +113,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
                 var api = RestService.For<IUserApi>(Constants.ServerUri);
                 var resultUser = await api.CreateUserAsync(user);
                 if (resultUser != null)
-                    _eventAggregator.PublishOnUIThread(new UserRegisterEvent(user));
+                    _eventAggregator.PublishOnUIThread(new UserRegisterPayload(user));
 
             }
             catch (Exception e)

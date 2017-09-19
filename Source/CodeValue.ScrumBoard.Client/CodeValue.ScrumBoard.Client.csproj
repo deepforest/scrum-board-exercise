@@ -83,6 +83,7 @@
     </ApplicationDefinition>
     <Compile Include="Apis\IUserApi.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Events\TaskSelectedPayload.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Modules\LoggingModule.cs" />
     <Compile Include="Common\Constants.cs" />
@@ -91,10 +92,10 @@
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Task.cs" />
-    <Compile Include="Events\BoardActiveEvent.cs" />
-    <Compile Include="Events\UserLoggedInEvent.cs" />
-    <Compile Include="Events\UserLoggedOutEvent.cs" />
-    <Compile Include="Events\UserRegisterEvent.cs" />
+    <Compile Include="Events\BoardActivePayload.cs" />
+    <Compile Include="Events\UserLoggedInPayload.cs" />
+    <Compile Include="Events\UserLoggedOutPayload.cs" />
+    <Compile Include="Events\UserRegisterPayload.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Models\UserModel.cs" />

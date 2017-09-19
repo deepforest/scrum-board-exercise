@@ -18,9 +18,9 @@ using System.Windows.Media.Imaging;
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
     public sealed class MainViewModel : Conductor<object>.Collection.OneActive,
-                                        IHandle<UserLoggedInEvent>,
-                                        IHandle<UserLoggedOutEvent>,
-        IHandle<UserRegisterEvent>
+                                        IHandle<UserLoggedInPayload>,
+                                        IHandle<UserLoggedOutPayload>,
+        IHandle<UserRegisterPayload>
     {
 
         private WindowState _currentWindowState;
@@ -155,7 +155,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         }
 
         #region  PUB-SUB Handles
-        public void Handle(UserLoggedInEvent message)
+        public void Handle(UserLoggedInPayload message)
         {
             try
             {
@@ -167,7 +167,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             catch { }
         }
 
-        public void Handle(UserLoggedOutEvent message)
+        public void Handle(UserLoggedOutPayload message)
         {
             try
             {
@@ -180,7 +180,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             catch { }
         }
 
-        public void Handle(UserRegisterEvent message)
+        public void Handle(UserRegisterPayload message)
         {
             var userModel = message.UserModel;
             CurrentUserName = userModel.Name;
