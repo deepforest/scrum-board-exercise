@@ -70,30 +70,37 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         {
             try
             {
+                var user = new UserModel { Name = _name, Password = _password, Image = null };
                 var api = RestService.For<IUserApi>(Constants.ServerUri);
-                var user = await api.GetUserAsync(_name,_password);
-                if (user == null)
+                var resultUser = await api.GetUserAsync(user);
+                if (resultUser == null)
                     return;
 
-                _eventAggregator.PublishOnUIThread(new UserLoggedInEvent(user));
+                _eventAggregator.PublishOnUIThread(new UserLoggedInEvent(resultUser));
 
             }
             catch { }
         }
 
-        public async void Register()
+        public async Task Register()
         {
             const string imagePath = @"d:\images\people-icon.png";
             try
             {
-                var user = new UserModel { Name = _name, Password = _password, Image = Utils.ImageToBytes(Utils.ImageFromPath(imagePath)) };
+                var image = Utils.ImageToBytes(imagePath);
+                var user = new UserModel { Name = _name, Password = _password, Image = image };
                 var api = RestService.For<IUserApi>(Constants.ServerUri);
                 var resultUser = await api.CreateUserAsync(user);
                 if (resultUser != null)
                     _eventAggregator.PublishOnUIThread(new UserRegisterEvent(user));
 
             }
-            catch { }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
+
+      
     }
 }

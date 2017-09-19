@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Service.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class UserController : Controller
     {
@@ -21,7 +22,7 @@ namespace CodeValue.ScrumBoard.Service.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public IActionResult Login([FromBody] dynamic user)
         {
             var manager = new UserManager();

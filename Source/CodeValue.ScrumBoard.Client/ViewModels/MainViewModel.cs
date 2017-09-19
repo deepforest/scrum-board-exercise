@@ -18,7 +18,8 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 {
     public sealed class MainViewModel : Conductor<INavigation>.Collection.OneActive,
                                         IHandle<UserLoggedInEvent>,
-                                        IHandle<UserLoggedOutEvent>
+                                        IHandle<UserLoggedOutEvent>,
+        IHandle<UserRegisterEvent>
     {
 
         private WindowState _currentWindowState;
@@ -171,6 +172,14 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             catch { }
         }
 
-#endregion
+        public void Handle(UserRegisterEvent message)
+        {
+            var userModel = message.UserModel;
+            CurrentUserName = userModel.Name;
+            UserImage = Utils.BytesToImage(userModel.Image);
+            Navigate(_boardViewModelCreator());
+        }
+
+        #endregion
     }
 }
