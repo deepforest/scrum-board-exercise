@@ -10,7 +10,7 @@ namespace CodeValue.ScrumBoard.Client.Apis
 {
     interface IBoardApi
     {
-        [Get("/tasks}")]
-        Task<TaskModel> GetBoardTasksAsync(int board_id);
+        [Get("/task/{boardId}}")]
+        Task<IEnumerable<TaskModel>> GetBoardTasksAsync(string boardId);
     }
 }
