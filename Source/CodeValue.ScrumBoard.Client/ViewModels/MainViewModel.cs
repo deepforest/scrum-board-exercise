@@ -153,6 +153,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         {
             try
             {
+                // TODO: set user image and user name.
                 Navigate(_boardViewModelCreator());
             }
             catch { }
@@ -162,6 +163,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         {
             try
             {
+                // TODO: clear user image and user name.
                 Navigate(_loginViewModelCreator());
             }
             catch { }
