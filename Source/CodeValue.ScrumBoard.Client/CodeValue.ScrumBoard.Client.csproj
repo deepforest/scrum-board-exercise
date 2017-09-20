@@ -103,6 +103,7 @@
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Navigation\IBoardItemViewModel.cs" />
     <Compile Include="Navigation\IBoardsViewModel.cs" />
+    <Compile Include="Navigation\IBoardViewModel.cs" />
     <Compile Include="Navigation\ILoginViewModel.cs" />
     <Compile Include="Navigation\INavigation.cs" />
     <Compile Include="Navigation\ITaskViewModel.cs" />

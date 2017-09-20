@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    class BoardViewModel : INavigation<BoardActivePayload>
+    public class BoardViewModel : IBoardViewModel<BoardActivePayload>
     {
         public BoardViewModel()
         {
