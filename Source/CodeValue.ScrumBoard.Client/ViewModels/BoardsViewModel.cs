@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public class BoardsViewModel : Screen , IBoardsViewModel<object>
+    public class BoardsViewModel : Conductor<Screen>.Collection.AllActive, IBoardsViewModel<object>
     {
         private readonly ObservableCollection<Board> _BoardsCollection;
 

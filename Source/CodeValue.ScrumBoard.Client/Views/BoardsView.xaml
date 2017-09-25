@@ -23,13 +23,20 @@
         <Button Content ="+" FontSize="400" Grid.Column="2" Grid.Row="0" Margin="20"  Background="White"
                 cal:Message.Attach="[Event Click] = [Action AddNewBoard()]" />
 
-        <ItemsControl ItemsSource="{Binding _BoardsCollection}"
+        <ItemsControl ItemsSource="{Binding Items}"
                        Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
+            
+            
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="{x:Type local:BoardView}">
+                    <Setter Property="cal:View.Model" Value="{Binding}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
         </ItemsControl>
     </Grid>
 </UserControl>
