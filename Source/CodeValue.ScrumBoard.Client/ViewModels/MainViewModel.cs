@@ -20,8 +20,8 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
     public sealed class MainViewModel : Conductor<object>.Collection.OneActive,
                                         IHandle<UserLoggedInPayload>,
                                         IHandle<UserLoggedOutPayload>,
-        IHandle<BoardActivePayload> ,
-        IHandle<UserRegisterPayload>
+                                           IHandle<BoardActivePayload>,
+                                           IHandle<UserRegisterPayload>
     {
 
         private WindowState _currentWindowState;
@@ -30,36 +30,37 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         private Func<INavigation<object>> _loginViewModelCreator;
         private Func<INavigation<object>> _boardsViewModelCreator;
-        private Func<INavigation<BoardActivePayload>> _boardViewModelCreator;
         private Func<INavigation<object>> _taskViewModelCreator;
+        private Func<INavigation<BoardActivePayload>> _boardItemViewModelCreator;
+
 
         private string _currentUserName;
         private ImageSource _userImage;
-        
-     
-                     
-        public MainViewModel(IEventAggregator eventAggregator,                                                           
+
+
+
+        public MainViewModel(IEventAggregator eventAggregator,
                             Func<ILoginViewModel<object>> loginViewModelCreator,
-                            Func<IBoardsViewModel<object>> boardsViewModelCreator,
-                            Func<IBoardViewModel<BoardActivePayload>> boardViewModelCreator,
-                            Func<ITaskViewModel<object>> taskViewModelCreator)
+                            Func<IBoardsViewModel<object>> boardViewModelCreator,
+                            Func<ITaskViewModel<object>> taskViewModelCreator,
+                            Func<IBoardItemViewModel<BoardActivePayload>> boardItemViewModelCreator)
         {
             _progressBarVisibility = Visibility.Collapsed;
             eventAggregator.Subscribe(this);
             _loginViewModelCreator = loginViewModelCreator;
-            _boardsViewModelCreator = boardsViewModelCreator;
-            _boardViewModelCreator = boardViewModelCreator;
+            _boardsViewModelCreator = boardViewModelCreator;
             _taskViewModelCreator = taskViewModelCreator;
+            _boardItemViewModelCreator = boardItemViewModelCreator;
 
             Items.AddRange(new INavigation<object>[]
-            {               
-               loginViewModelCreator() 
+            {
+               loginViewModelCreator()
             });
 
             CurrentWindowState = WindowState.Normal;
             UserImage = new BitmapImage(new Uri(@"/Images/unknown_user.png", UriKind.Relative));
             CurrentUserName = "guest";
-          
+
         }
 
         public WindowState CurrentWindowState
@@ -87,37 +88,37 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             }
         }
 
-        public string CurrentUserName 
-         { 
-             get => _currentUserName; 
-             set 
-             { 
-                 if (Equals(_currentUserName, value)) 
-                     return;   
-                 _currentUserName = value; 
-                 NotifyOfPropertyChange(() => CurrentUserName); 
-             } 
-         }
+        public string CurrentUserName
+        {
+            get => _currentUserName;
+            set
+            {
+                if (Equals(_currentUserName, value))
+                    return;
+                _currentUserName = value;
+                NotifyOfPropertyChange(() => CurrentUserName);
+            }
+        }
 
-      
+
 
         public ImageSource UserImage
-         { 
-             get => _userImage; 
-             set 
-             { 
-                 if (Equals(_userImage, value)) 
-                     return;   
-                 _userImage = value; 
-                 NotifyOfPropertyChange(() => UserImage); 
-             } 
-         } 
- 
- 
-         protected override void OnInitialize()
-         { 
-             ActiveItem = Items.First(); 
-         }
+        {
+            get => _userImage;
+            set
+            {
+                if (Equals(_userImage, value))
+                    return;
+                _userImage = value;
+                NotifyOfPropertyChange(() => UserImage);
+            }
+        }
+
+
+        protected override void OnInitialize()
+        {
+            ActiveItem = Items.First();
+        }
 
         #region WINDOW STATE FUNCTIONS
 
@@ -143,14 +144,14 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         #endregion
 
-      
-        private async void Navigate<T>(INavigation<T> navigation,T args)
+
+        private async void Navigate<T>(INavigation<T> navigation, T args)
         {
             try
             {
                 ProgressBarVisibility = Visibility.Visible;
                 if (await navigation.NavigateToAsync(args))
-                    ActiveItem = navigation;            
+                    ActiveItem = navigation;
             }
             finally
             {
@@ -165,8 +166,8 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             {
                 var userModel = message.UserModel;
                 CurrentUserName = userModel.Name;
-                UserImage = Utils.BytesToImage(userModel.Image);                
-                Navigate<object>(_boardsViewModelCreator(),null);
+                UserImage = Utils.BytesToImage(userModel.Image);
+                Navigate<object>(_boardsViewModelCreator(), null);
             }
             catch { }
         }
@@ -175,11 +176,11 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         {
             try
             {
-              
+
                 // TODO: uri link in conatants
                 UserImage = new BitmapImage(new Uri(@"/Images/unknown_user.png", UriKind.Relative));
                 CurrentUserName = "guest";
-                Navigate<object>(_loginViewModelCreator(),null);
+                Navigate<object>(_loginViewModelCreator(), null);
             }
             catch { }
         }
@@ -189,12 +190,13 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             var userModel = message.UserModel;
             CurrentUserName = userModel.Name;
             UserImage = Utils.BytesToImage(userModel.Image);
-            Navigate<object>(_boardsViewModelCreator(),null);
+            Navigate<object>(_boardsViewModelCreator(), null);
         }
 
         public void Handle(BoardActivePayload message)
         {
-            Navigate<BoardActivePayload>(_boardViewModelCreator(), message);
+           // message.BoardId
+            Navigate<object>(_boardsViewModelCreator(), null);
         }
 
         #endregion

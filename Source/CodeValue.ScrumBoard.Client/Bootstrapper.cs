@@ -10,6 +10,7 @@ using CodeValue.ScrumBoard.Client.ViewModels;
 using System.IO;
 using System.Reflection;
 using CodeValue.ScrumBoard.Client.Common;
+using CodeValue.ScrumBoard.Client.Events;
 using CodeValue.ScrumBoard.Client.Navigation;
 using CodeValue.ScrumBoard.Client.Events;
 
@@ -84,6 +85,7 @@ namespace CodeValue.ScrumBoard.Client
             builder.RegisterType<BoardsViewModel>().As<IBoardsViewModel<object>>();
             builder.RegisterType<BoardViewModel>().As<IBoardViewModel<BoardActivePayload>>();
             builder.RegisterType<TaskViewModel>().As<ITaskViewModel<object>>();
+            builder.RegisterType<BoardItemViewModel>().As<IBoardItemViewModel<BoardActivePayload>>();
         }
 
       

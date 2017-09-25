@@ -101,6 +101,7 @@
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Navigation\IBoardItemViewModel.cs" />
     <Compile Include="Navigation\IBoardsViewModel.cs" />
     <Compile Include="Navigation\IBoardViewModel.cs" />
     <Compile Include="Navigation\ILoginViewModel.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Navigation\NavigationParameter.cs" />
     <Compile Include="ViewModels\BoardsViewModel.cs" />
     <Compile Include="ViewModels\BoardViewModel.cs" />
+    <Compile Include="ViewModels\BoardItemViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\TaskItemViewModel.cs" />
