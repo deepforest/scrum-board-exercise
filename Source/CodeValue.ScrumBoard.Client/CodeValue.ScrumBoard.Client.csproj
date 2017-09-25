@@ -85,6 +85,7 @@
     <Compile Include="Apis\ITaskApi.cs" />
     <Compile Include="Apis\IUserApi.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Events\NewBoardForDelete.cs" />
     <Compile Include="Events\TaskSelectedPayload.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Modules\LoggingModule.cs" />
@@ -115,6 +116,9 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\TaskItemViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
+    <Compile Include="Views\BoardItemView.xaml.cs">
+      <DependentUpon>BoardItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BoardsView.xaml.cs">
       <DependentUpon>BoardsView.xaml</DependentUpon>
     </Compile>
@@ -134,6 +138,10 @@
     <Compile Include="Views\TaskView.xaml.cs">
       <DependentUpon>TaskView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\BoardItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\BoardsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

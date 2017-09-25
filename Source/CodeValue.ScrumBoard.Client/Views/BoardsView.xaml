@@ -4,9 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CodeValue.ScrumBoard.Client.Views"
+             xmlns:local1="clr-namespace:CodeValue.ScrumBoard.Client.ViewModels"
              mc:Ignorable="d" 
              xmlns:cal="http://www.caliburnproject.org"
              d:DesignHeight="500" d:DesignWidth="500">
+
+    <UserControl.Resources>
+        <local1:BoardItemViewModel x:Key="BoardItem" x:Shared="False"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="39*"/>
@@ -18,9 +23,12 @@
             <RowDefinition Height="101*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Boards:" FontSize="20" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="24" Margin="9,36" Width="60"/>
+        <TextBlock Text="Boards:" FontSize="20" Grid.Column="0" Grid.Row="0" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   Height="24" Margin="9,36" Width="60"/>
 
-        <Button Content ="+" FontSize="400" Grid.Column="2" Grid.Row="0" Margin="20"  Background="White"
+        <Button Content ="+" FontSize="40" Grid.Column="2" Grid.Row="0" Margin="20"  Background="White"
                 cal:Message.Attach="[Event Click] = [Action AddNewBoard()]" />
 
         <ItemsControl ItemsSource="{Binding Items}"
@@ -30,13 +38,13 @@
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            
-            
+
             <ItemsControl.ItemContainerStyle>
-                <Style TargetType="{x:Type local:BoardView}">
-                    <Setter Property="cal:View.Model" Value="{Binding}" />
+                <Style >
+                    <Setter Property="cal:View.Model" Value="{StaticResource BoardItem}" />
                 </Style>
             </ItemsControl.ItemContainerStyle>
+            
         </ItemsControl>
     </Grid>
 </UserControl>
