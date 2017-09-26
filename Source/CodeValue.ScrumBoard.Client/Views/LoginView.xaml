@@ -20,7 +20,7 @@
             <TextBlock  Text="Password" Padding="10" HorizontalAlignment="Left"/>
             <TextBox Text="{Binding Password}" HorizontalAlignment="Stretch" Padding="10" />
             <WrapPanel HorizontalAlignment="Center" Margin="0,16,0,0">
-                <Button Height="30" Margin="0,16,4,0" Width="80" Content="Login" HorizontalAlignment="Center" cal:Message.Attach="[Event Click] = [Action Login()]" />
+                <Button Height="30" Margin="0,16,4,0" Width="80" Content="Login" HorizontalAlignment="Center" cal:Message.Attach="[Event Click] = [Action Login()]"/>
                 <Button Height="30" Margin="4,16,0,0" Width="80" Content="Register" HorizontalAlignment="Center" cal:Message.Attach="[Event Click] = [Action Register()]"/>
             </WrapPanel>
             <TextBlock Text="Select image:"/>
