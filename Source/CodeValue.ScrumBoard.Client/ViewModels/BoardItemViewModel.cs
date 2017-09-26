@@ -16,17 +16,25 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
     {
         private readonly IEventAggregator _eventAggregator;
         private bool _isEditable;
-        private bool _isInTheDB;
+        private bool _isInTheDb;
 
         private string _description;
         private string _name;
         public string Id { get; set; }
 
+        public BoardItemViewModel()
+        {
+            IsInTheDb = false;
+            IsEditable = true;
+            _description = "Project Description";
+            _name = "Project Name";
+        }
+
         public string Description
         {
-            get { return _description; }
+            get => _description;
 
-             set
+            set
             {
                 _description = value;
                 NotifyOfPropertyChange();
@@ -35,9 +43,9 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         public string Name
         {
-            get { return _name; }
+            get => _name;
 
-             set
+            set
             {
                 _name = value;
                 NotifyOfPropertyChange();
@@ -46,21 +54,23 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         public bool IsEditable
         {
-            get { return _isEditable; }
+            get => _isEditable;
 
-            private set
+            set
             {
                 _isEditable = value;
                 NotifyOfPropertyChange();
             }
         }
 
-        public BoardItemViewModel()
+        public bool IsInTheDb
         {
-            _isInTheDB = false;
-            IsEditable = true;
-            Description = "desc";
-            Name = "aa";
+            get => _isInTheDb;
+            set
+            {
+                _isInTheDb = value;
+                NotifyOfPropertyChange();
+            }
         }
 
         public Task<bool> NavigateToAsync(BoardActivePayload args)
@@ -68,7 +78,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             throw new NotImplementedException();
         }
 
-        public async void SaveBoardDetailsChangesAsync(string name,string descreption)
+        public async void SaveBoardDetailsChangesAsync(string name, string descreption)
         {
             try
             {
@@ -77,12 +87,13 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
                 var board = new Board()
                 {
                     Description = descreption,
-                    Name=name
+                    Name = name
                 };
 
                 var recievedBoard = await api.CreateBoardAsync(board);
                 Id = recievedBoard.Id.ToString();
-                _isInTheDB = true;
+                IsInTheDb = true;
+                IsEditable = false;
             }
             catch (Exception ex)
             {
@@ -96,9 +107,9 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         public void DiscardBoardDetailsChanges()
         {
-            if(!_isInTheDB)
+            if (!IsInTheDb)
             {
-             //   _eventAggregator.PublishOnUIThread(new NewBoardForDelete());
+                //   _eventAggregator.PublishOnUIThread(new NewBoardForDelete());
             }
         }
     }

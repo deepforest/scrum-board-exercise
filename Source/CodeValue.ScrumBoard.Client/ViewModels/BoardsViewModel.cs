@@ -14,7 +14,7 @@ using CodeValue.ScrumBoard.Client.Apis;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public class BoardsViewModel : Conductor<Screen>.Collection.AllActive, IBoardsViewModel<object> ,  IHandle<NewBoardForDelete>
+    public class BoardsViewModel : Conductor<Screen>.Collection.AllActive, IBoardsViewModel<object>, IHandle<NewBoardForDelete>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly Func<BoardItemViewModel> _boardItemViewModelCreator;
@@ -22,13 +22,13 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         public BoardsViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-          //  _boardItemViewModelCreator = boardItemViewModelCreator;
+            //  _boardItemViewModelCreator = boardItemViewModelCreator;
         }
 
-        public async void AddNewBoard()
+        public async Task AddNewBoard()
         {
             var newBoardItemVm = new BoardItemViewModel();
-            Items.Add(newBoardItemVm);
+            await Task.Run(() => Items.Add(newBoardItemVm));
         }
 
         public async Task<bool> NavigateToAsync(object args)
@@ -41,11 +41,13 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
                 {
                     Description = board.Description,
                     Name = board.Name,
-                    Id = board.Id.ToString()
+                    Id = board.Id.ToString(),
+                    IsEditable = false,
+                    IsInTheDb = true
+
                 };
                 Items.Add(newBoardItemVm);
             }
-
 
             return true;
         }
@@ -72,7 +74,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         public void Handle(NewBoardForDelete message)
         {
-          Items.Remove(  Items.LastOrDefault());
+            Items.Remove(Items.LastOrDefault());
         }
     }
 }
