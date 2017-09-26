@@ -9,34 +9,70 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CodeValue.ScrumBoard.Client.Events;
+using Refit;
+using CodeValue.ScrumBoard.Client.Apis;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public class BoardsViewModel : Screen , IBoardsViewModel<object>
+    public class BoardsViewModel : Conductor<Screen>.Collection.AllActive, IBoardsViewModel<object> ,  IHandle<NewBoardForDelete>
     {
-        private readonly ObservableCollection<Board> _BoardsCollection;
         private readonly IEventAggregator _eventAggregator;
+        private readonly Func<BoardItemViewModel> _boardItemViewModelCreator;
 
         public BoardsViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
+          //  _boardItemViewModelCreator = boardItemViewModelCreator;
         }
-
-       
 
         public async void AddNewBoard()
         {
-
+            var newBoardItemVm = new BoardItemViewModel();
+            Items.Add(newBoardItemVm);
         }
 
         public async Task<bool> NavigateToAsync(object args)
         {
-            return await Task.Run(() => {  return true; });
+            var boards = await GetAllBoardsAsync();
+
+            foreach (var board in boards)
+            {
+                var newBoardItemVm = new BoardItemViewModel()
+                {
+                    Description = board.Description,
+                    Name = board.Name,
+                    Id = board.Id.ToString()
+                };
+                Items.Add(newBoardItemVm);
+            }
+
+
+            return true;
         }
+
+        private async Task<IEnumerable<Board>> GetAllBoardsAsync()
+        {
+            try
+            {
+                var api = RestService.For<IBoardApi>("http://localhost:8080/api");
+                var boards = await api.GetBoardsAsync();
+                return boards;
+            }
+            catch (Exception ex)
+            {
+                return Enumerable.Empty<Board>();
+            }
+        }
+
 
         public void OpenBoard(BoardItemViewModel boardItem)
         {
             _eventAggregator.PublishOnUIThread(new BoardActivePayload());
+        }
+
+        public void Handle(NewBoardForDelete message)
+        {
+          Items.Remove(  Items.LastOrDefault());
         }
     }
 }

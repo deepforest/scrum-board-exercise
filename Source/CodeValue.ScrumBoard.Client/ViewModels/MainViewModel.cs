@@ -195,8 +195,8 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         public void Handle(BoardActivePayload message)
         {
-           // message.BoardId
-            Navigate<BoardActivePayload>(_boardItemViewModelCreator(), null);
+           //// message.BoardId
+            //Navigate<object>(_boardViewModelCreator(), null);
         }
 
         #endregion
