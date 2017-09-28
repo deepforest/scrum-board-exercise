@@ -29,9 +29,8 @@ namespace CodeValue.ScrumBoard.Service.Controllers
         /// <returns></returns>
         [HttpGet("{id}", Name = nameof(GetUser))]
         public IActionResult GetUser(int id)
-        {
-            var manager = new UserManager();
-            var user = manager.GetUsers().FirstOrDefault(u => Equals(u.Id, id));
+        {            
+            var user = _userManager.GetUsers().FirstOrDefault(u => Equals(u.Id, id));
             if (user == null)
             {
                 return NotFound();
@@ -47,9 +46,8 @@ namespace CodeValue.ScrumBoard.Service.Controllers
         /// <returns></returns>
         [HttpPost("[action]")]
         public IActionResult Login([FromBody] LoginUser user)
-        {
-            var manager = new UserManager();
-            var userFromDb = manager.GetUsers().FirstOrDefault(u => Equals(u.Name, user.Name) && Equals(u.Secret, user.Password));
+        {            
+            var userFromDb = _userManager.GetUsers().FirstOrDefault(u => Equals(u.Name, user.Name) && Equals(u.Secret, user.Password));
             if (user == null)
             {
                 return NotFound();
@@ -65,9 +63,8 @@ namespace CodeValue.ScrumBoard.Service.Controllers
         /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] NewUser user)
-        {
-            var manager = new UserManager();
-            var id = await manager.CreateUser(user);
+        {            
+            var id = await _userManager.CreateUser(user);
             if (id == null)
             {
                 return NotFound();
