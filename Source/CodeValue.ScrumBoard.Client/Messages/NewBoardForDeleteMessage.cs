@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeValue.ScrumBoard.Client.Events
+namespace CodeValue.ScrumBoard.Client.Messages
 {
-    public class NewBoardForDelete
+    public class NewBoardForDeleteMessage
     {
     }
 }

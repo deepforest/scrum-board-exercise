@@ -5,14 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeValue.ScrumBoard.Client.Events
+namespace CodeValue.ScrumBoard.Client.Messages
 {
-    public class UserRegisterPayload
+    public class UserLoggedInMessage
     {
-
         private readonly UserModel _userModel;
 
-        public UserRegisterPayload(UserModel userModel)
+        public UserLoggedInMessage(UserModel userModel)
         {
             _userModel = userModel;
         }

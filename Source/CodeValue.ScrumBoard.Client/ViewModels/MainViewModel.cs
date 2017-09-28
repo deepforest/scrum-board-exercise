@@ -1,27 +1,19 @@
 ﻿using Caliburn.Micro;
 using CodeValue.ScrumBoard.Client.Common;
-using CodeValue.ScrumBoard.Client.Events;
+using CodeValue.ScrumBoard.Client.Messages;
 using CodeValue.ScrumBoard.Client.Navigation;
-using CodeValue.ScrumBoard.Client.Views;
-using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
     public sealed class MainViewModel : Conductor<object>.Collection.OneActive,
-                                        IHandle<UserLoggedInPayload>,
-                                        IHandle<UserLoggedOutPayload>,
-                                           IHandle<BoardActivePayload>,
-                                           IHandle<UserRegisterPayload>
+                                        IHandle<UserLoggedInMessage>,
+                                        IHandle<UserLoggedOutMessage>,
+                                        IHandle<BoardActiveMessage>
     {
 
         private WindowState _currentWindowState;
@@ -31,7 +23,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         private Func<INavigation<object>> _loginViewModelCreator;
         private Func<INavigation<object>> _boardsViewModelCreator;
         private Func<INavigation<object>> _taskViewModelCreator;
-        private Func<INavigation<BoardActivePayload>> _boardItemViewModelCreator;
+        private Func<INavigation<BoardActiveMessage>> _boardItemViewModelCreator;
 
 
         private string _currentUserName;
@@ -43,7 +35,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
                             Func<ILoginViewModel<object>> loginViewModelCreator,
                             Func<IBoardsViewModel<object>> boardViewModelCreator,
                             Func<ITaskViewModel<object>> taskViewModelCreator,
-                            Func<IBoardItemViewModel<BoardActivePayload>> boardItemViewModelCreator)
+                            Func<IBoardItemViewModel<BoardActiveMessage>> boardItemViewModelCreator)
         {
             _progressBarVisibility = Visibility.Collapsed;
             eventAggregator.Subscribe(this);
@@ -160,19 +152,19 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         }
 
         #region  PUB-SUB Handles
-        public void Handle(UserLoggedInPayload message)
+        public void Handle(UserLoggedInMessage message)
         {
             try
             {
                 var userModel = message.UserModel;
                 CurrentUserName = userModel.Name;
                 UserImage = Utils.BytesToImage(userModel.Image);
-                Navigate<object>(_boardsViewModelCreator(), null);
+                Navigate(_boardsViewModelCreator(), null);
             }
             catch { }
         }
 
-        public void Handle(UserLoggedOutPayload message)
+        public void Handle(UserLoggedOutMessage message)
         {
             try
             {
@@ -180,20 +172,12 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
                 // TODO: uri link in conatants
                 UserImage = new BitmapImage(new Uri(@"/Images/unknown_user.png", UriKind.Relative));
                 CurrentUserName = "guest";
-                Navigate<object>(_loginViewModelCreator(), null);
+                Navigate(_loginViewModelCreator(), null);
             }
             catch { }
         }
 
-        public void Handle(UserRegisterPayload message)
-        {
-            var userModel = message.UserModel;
-            CurrentUserName = userModel.Name;
-            UserImage = Utils.BytesToImage(userModel.Image);
-            Navigate<object>(_boardsViewModelCreator(), null);
-        }
-
-        public void Handle(BoardActivePayload message)
+        public void Handle(BoardActiveMessage message)
         {
            //// message.BoardId
             //Navigate<object>(_boardViewModelCreator(), null);

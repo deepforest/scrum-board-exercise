@@ -3,32 +3,31 @@ using CodeValue.ScrumBoard.Client.Models;
 using CodeValue.ScrumBoard.Client.Navigation;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using CodeValue.ScrumBoard.Client.Events;
 using Refit;
 using CodeValue.ScrumBoard.Client.Apis;
+using CodeValue.ScrumBoard.Client.Messages;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public class BoardsViewModel : Conductor<Screen>.Collection.AllActive, IBoardsViewModel<object>, IHandle<NewBoardForDelete>
+    public class BoardsViewModel : Conductor<Screen>.Collection.AllActive, IBoardsViewModel<object>, IHandle<NewBoardForDeleteMessage>
     {
+        private readonly IBoardApi _boardApi;
         private readonly IEventAggregator _eventAggregator;
         private readonly Func<BoardItemViewModel> _boardItemViewModelCreator;
 
-        public BoardsViewModel(IEventAggregator eventAggregator)
+        public BoardsViewModel(IBoardApi boardApi, IEventAggregator eventAggregator)
         {
+            _boardApi = boardApi;
             _eventAggregator = eventAggregator;
             //  _boardItemViewModelCreator = boardItemViewModelCreator;
         }
 
-        public async Task AddNewBoard()
+        public void AddNewBoard()
         {
-            var newBoardItemVm = new BoardItemViewModel();
-            await Task.Run(() => Items.Add(newBoardItemVm));
+            var newBoardItemVm = new BoardItemViewModel(_boardApi);
+            Items.Add(newBoardItemVm);
         }
 
         public async Task<bool> NavigateToAsync(object args)
@@ -37,7 +36,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
             foreach (var board in boards)
             {
-                var newBoardItemVm = new BoardItemViewModel()
+                var newBoardItemVm = new BoardItemViewModel(_boardApi)
                 {
                     Description = board.Description,
                     Name = board.Name,
@@ -55,9 +54,8 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         private async Task<IEnumerable<Board>> GetAllBoardsAsync()
         {
             try
-            {
-                var api = RestService.For<IBoardApi>("http://localhost:8080/api");
-                var boards = await api.GetBoardsAsync();
+            {                
+                var boards = await _boardApi.GetBoardsAsync();
                 return boards;
             }
             catch (Exception ex)
@@ -69,10 +67,10 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         public void OpenBoard(BoardItemViewModel boardItem)
         {
-            _eventAggregator.PublishOnUIThread(new BoardActivePayload());
+            _eventAggregator.PublishOnUIThread(new BoardActiveMessage());
         }
 
-        public void Handle(NewBoardForDelete message)
+        public void Handle(NewBoardForDeleteMessage message)
         {
             Items.Remove(Items.LastOrDefault());
         }

@@ -12,6 +12,10 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.Extensions.PlatformAbstractions;
 using System.IO;
+using Microsoft.IdentityModel.Tokens;
+using CodeValue.ScrumBoard.Service.Infrastructure;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace CodeValue.ScrumBoard.Service
 {
@@ -27,7 +31,22 @@ namespace CodeValue.ScrumBoard.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services
+                .AddAuthentication()
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = AuthHelper.Issuer,
+                        ValidAudience = AuthHelper.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AuthHelper.PrivateSecretKey))
+                    };
+                });
+
             services.AddMvc();
+
             services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<IBoardManager, BoardManager>();
             services.AddTransient<ITaskManager, TaskManager>();
@@ -57,6 +76,7 @@ namespace CodeValue.ScrumBoard.Service
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Virtual Scrum Board API V1");
             });
 
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

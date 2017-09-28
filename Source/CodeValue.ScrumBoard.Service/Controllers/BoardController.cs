@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using CodeValue.ScrumBoard.Service.Entities;
 using CodeValue.ScrumBoard.Service.Managers;
-using MongoDB.Driver;
 using CodeValue.ScrumBoard.Service.DTOs;
-using MongoDB.Bson;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace CodeValue.ScrumBoard.Service.Controllers
 {
@@ -15,10 +12,15 @@ namespace CodeValue.ScrumBoard.Service.Controllers
     /// Virtual scrum board APIs.
     /// </summary>
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BoardController : Controller
     {
         private readonly IBoardManager _boardManager;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="boardManager"></param>
         public BoardController(IBoardManager boardManager)
         {
             _boardManager = boardManager;

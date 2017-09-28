@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Service.DTOs
 {
-    public class LoginUser
+    public class RegisterUserResponse
     {
-        public string Name { get; set; }
-        public string Password { get; set; }
+        public string Error { get; set; }
     }
 }

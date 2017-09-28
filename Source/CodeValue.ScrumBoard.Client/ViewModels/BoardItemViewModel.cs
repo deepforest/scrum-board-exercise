@@ -1,33 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
-using CodeValue.ScrumBoard.Client.Events;
 using CodeValue.ScrumBoard.Client.Navigation;
 using Refit;
 using CodeValue.ScrumBoard.Client.Apis;
 using CodeValue.ScrumBoard.Client.Models;
+using CodeValue.ScrumBoard.Client.Messages;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public class BoardItemViewModel : Screen, IBoardItemViewModel<BoardActivePayload>
+    public class BoardItemViewModel : Screen, IBoardItemViewModel<BoardActiveMessage>
     {
-        private readonly IEventAggregator _eventAggregator;
+        
         private bool _isEditable;
         private bool _isInTheDb;
 
         private string _description;
         private string _name;
+        private readonly IBoardApi _boardApi;
+
         public string Id { get; set; }
 
-        public BoardItemViewModel()
+        public BoardItemViewModel(IBoardApi boardApi)
         {
             IsInTheDb = false;
             IsEditable = true;
             _description = "Project Description";
             _name = "Project Name";
+            _boardApi = boardApi;
         }
 
         public string Description
@@ -73,7 +73,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             }
         }
 
-        public Task<bool> NavigateToAsync(BoardActivePayload args)
+        public Task<bool> NavigateToAsync(BoardActiveMessage args)
         {
             throw new NotImplementedException();
         }
@@ -82,15 +82,13 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         {
             try
             {
-                var api = RestService.For<IBoardApi>("http://localhost:8080/api");
-
                 var board = new Board()
                 {
                     Description = descreption,
                     Name = name
                 };
 
-                var recievedBoard = await api.CreateBoardAsync(board);
+                var recievedBoard = await _boardApi.CreateBoardAsync(board);
                 Id = recievedBoard.Id.ToString();
                 IsInTheDb = true;
                 IsEditable = false;

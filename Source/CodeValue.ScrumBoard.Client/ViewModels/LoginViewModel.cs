@@ -1,37 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using CodeValue.ScrumBoard.Client.Navigation;
-using Refit;
 using CodeValue.ScrumBoard.Client.Apis;
 using CodeValue.ScrumBoard.Client.Common;
-using CodeValue.ScrumBoard.Client.Events;
 using CodeValue.ScrumBoard.Client.Models;
 using Microsoft.Win32;
-using System.Threading;
+using CodeValue.ScrumBoard.Client.DTOs;
+using CodeValue.ScrumBoard.Client.Messages;
+using System.Diagnostics;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
     public class LoginViewModel : Screen, ILoginViewModel<object>
     {
+        private readonly ITokenStore _tokenStore;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IUserApi _userApi;
         private string _password;
 
         private string _name;
 
         private string _imagePath;
 
-        public LoginViewModel(IEventAggregator eventAggregator)
+        public LoginViewModel(ITokenStore tokenStore, IEventAggregator eventAggregator, IUserApi userApi)
         {
             eventAggregator.Subscribe(this);
+            _tokenStore = tokenStore;
             _eventAggregator = eventAggregator;
+            _userApi = userApi;
             _name = string.Empty;
             _password = string.Empty;
             _imagePath = string.Empty;
         }
+
         public string Password
         {
             get
@@ -95,37 +97,92 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         {
             try
             {
-                var user = new UserModel { Name = _name, Password = _password, Image = null };
-                var api = RestService.For<IUserApi>(Constants.ServerUri);
-                var resultUser = await api.GetUserAsync(user);
-                if (resultUser == null)
-                    return;
+                var credentials = new UserCredentialsDto
+                {
+                    UserName = _name,
+                    Password = _password
+                };
 
-                _eventAggregator.PublishOnUIThread(new UserLoggedInPayload(resultUser));
-
+                await LoginAsync(credentials);
             }
-            catch { }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         public async Task Register()
         {
-          //  const string imagePath = @"d:\images\people-icon.png";
+            //  const string imagePath = @"d:\images\people-icon.png";
             try
             {
                 var image = Utils.ImageToBytes(_imagePath);
-                var user = new UserModel { Name = _name, Password = _password, Image = image };
-                var api = RestService.For<IUserApi>(Constants.ServerUri);
-                var resultUser = await api.CreateUserAsync(user);
-                if (resultUser != null)
-                    _eventAggregator.PublishOnUIThread(new UserRegisterPayload(user));
+                var registration = new UserRegistrationDto
+                {
+                    Credentials = new UserCredentialsDto
+                    {
+                        UserName = _name,
+                        Password = _password,
+                    },
+                    Image = image
+                };
 
+                await RegisterUserAsync(registration);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
             }
         }
 
-      
+        private async Task RegisterUserAsync(UserRegistrationDto registration)
+        {
+            try
+            {                
+                await _userApi.RegisterUserAsync(registration);
+                var credentials = new UserCredentialsDto
+                {
+                    UserName = registration.Credentials.UserName,
+                    Password = registration.Credentials.Password
+                };
+
+                await LoginAsync(credentials);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private async Task LoginAsync(UserCredentialsDto credentials)
+        {
+            try
+            {
+                var loginResponse = await _userApi.LoginAsync(credentials);
+                if (loginResponse.Error != null)
+                {
+                    Debug.WriteLine(loginResponse.Error);
+                }
+                else
+                {
+                    _tokenStore.StoreToken(loginResponse.JwtToken);
+
+                    // Create api again, now with credentials.                    
+                    var getUserResponse = await _userApi.GetUserAsync(credentials.UserName);
+                    var userModel = new UserModel
+                    {
+                        Name = getUserResponse.User.Name,
+                        Image = getUserResponse.User.Image,
+                        Token = loginResponse.JwtToken
+                    };
+
+                    _eventAggregator.PublishOnUIThread(new UserLoggedInMessage(userModel));
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
     }
 }

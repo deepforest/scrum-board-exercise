@@ -10,8 +10,8 @@ namespace CodeValue.ScrumBoard.Client.Common
     {
         public static readonly string TitleMessage = "Virtual Scrum Board";
 
-        //public static readonly string ServerUri = "http://localhost:8080/api";
+        public static readonly string ServerUri = "http://localhost:5000/api";
 
-        public static readonly string ServerUri = "http://18.221.112.134:5000/api";
+        //public static readonly string ServerUri = "http://18.221.112.134:5000/api";
     }
 }

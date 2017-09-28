@@ -1,7 +1,8 @@
 using CodeValue.ScrumBoard.Service.DTOs;
 using CodeValue.ScrumBoard.Service.Managers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
 using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Service.Controllers
@@ -10,10 +11,15 @@ namespace CodeValue.ScrumBoard.Service.Controllers
     /// Virtual scrum board tasks APIs.
     /// </summary>
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TaskController : Controller
     {
         private readonly ITaskManager _taskManager;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="taskManager"></param>
         public TaskController(ITaskManager taskManager)
         {
             _taskManager = taskManager;
