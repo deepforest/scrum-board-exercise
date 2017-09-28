@@ -12,5 +12,8 @@ namespace CodeValue.ScrumBoard.Client.Apis
     {
         [Get("/task")]
         Task<TaskModel> CreateTaskAsync();
+
+        [Delete("/task/{id}")]
+        Task DeleteTaskAsync(string id);
     }
 }

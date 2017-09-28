@@ -4,6 +4,7 @@ using CodeValue.ScrumBoard.Service.Managers;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace CodeValue.ScrumBoard.Service.Controllers
 {
@@ -11,6 +12,13 @@ namespace CodeValue.ScrumBoard.Service.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
+        [HttpGet]
+        public IActionResult Test()
+        {
+            return Ok("Test response ok.");
+        }
+        
+
         [HttpGet("{id}", Name = nameof(GetUser))]
         public IActionResult GetUser(int id)
         {

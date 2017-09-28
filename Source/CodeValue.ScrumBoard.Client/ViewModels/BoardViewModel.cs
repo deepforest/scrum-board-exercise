@@ -64,5 +64,12 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
                 return Enumerable.Empty<TaskModel>();
             }
         }
+
+        public void DeleteTask(TaskItemViewModel taskToDelete)
+        {
+            TodoTasks.Remove(taskToDelete);
+            DoingTasks.Remove(taskToDelete);
+            DoneTasks.Remove(taskToDelete);
+        }
     }
 }
