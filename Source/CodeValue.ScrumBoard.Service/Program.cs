@@ -10,35 +10,26 @@ using Microsoft.Extensions.Logging;
 
 namespace CodeValue.ScrumBoard.Service
 {
-    public class Program
+    internal class Program
     {
         public static void Main(string[] args)
         {
             var configuration = new ConfigurationBuilder()
-       .AddCommandLine(args)
-       .Build();
-            //BuildWebHost(args).Run();
+                .AddCommandLine(args)
+                .Build();
+            
             var hostUrl = configuration["hosturl"];
             if (string.IsNullOrEmpty(hostUrl))
                 hostUrl = "http://0.0.0.0:5000";
 
-
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseUrls(hostUrl)   // <!-- this 
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseStartup<Startup>()
-                .UseConfiguration(configuration)
-                .Build();
-
-            host.Run();
-
-
+            BuildWebHost(hostUrl, args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        private static IWebHost BuildWebHost(string hostUrl, string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseKestrel()
+                .UseUrls(hostUrl)
+                .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
                 .Build();
     }

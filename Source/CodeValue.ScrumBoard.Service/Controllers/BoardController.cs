@@ -11,16 +11,23 @@ using MongoDB.Bson;
 
 namespace CodeValue.ScrumBoard.Service.Controllers
 {
+    /// <summary>
+    /// Virtual scrum board APIs.
+    /// </summary>
     [Route("api/[controller]")]
     public class BoardController : Controller
     {
         private readonly IBoardManager _boardManager;
 
-        public BoardController(IBoardManager boardManager)
+        internal BoardController(IBoardManager boardManager)
         {
             _boardManager = boardManager;
         }
 
+        /// <summary>
+        /// Get all virtual scrum boards.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<NewBoardDetails> GetBoards()
         {
@@ -36,6 +43,11 @@ namespace CodeValue.ScrumBoard.Service.Controllers
             }
         }
 
+        /// <summary>
+        /// Create a new virtual scrum board.
+        /// </summary>
+        /// <param name="newBoard">New scurm board properties.</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<NewBoardDetails> CreateBoard([FromBody] NewBoardDetails newBoard)
         {
@@ -44,6 +56,11 @@ namespace CodeValue.ScrumBoard.Service.Controllers
             return newBoard;
         }
 
+        /// <summary>
+        /// Update virtual scrum board details.
+        /// </summary>
+        /// <param name="boardToUpdate">Properties of the virtual scrum board should be updated.</param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<bool> UpdateBoardDetails([FromBody] NewBoardDetails boardToUpdate)
         {
@@ -51,6 +68,11 @@ namespace CodeValue.ScrumBoard.Service.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Delete virtual scrum board.
+        /// </summary>
+        /// <param name="boardId">The unique ID of the virtual scrum board.</param>
+        /// <returns></returns>
         [HttpDelete("{boardId}")]
         public async Task<bool> DeleteBoard(string boardId)
         {

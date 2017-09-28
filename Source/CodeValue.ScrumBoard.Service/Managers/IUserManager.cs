@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Service.Managers
 {
-    public interface IUserManager
+    internal interface IUserManager
     {
         Task<string> CreateUser(NewUser user);
         IEnumerable<User> GetUsers();

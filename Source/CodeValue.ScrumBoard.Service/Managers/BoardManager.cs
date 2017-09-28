@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace CodeValue.ScrumBoard.Service.Managers
 {
-    public class BoardManager : IBoardManager
+    internal class BoardManager : IBoardManager
     {
         private readonly string _connectionString = "mongodb://localhost:27017";
 

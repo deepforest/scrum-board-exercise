@@ -9,7 +9,7 @@ using CodeValue.ScrumBoard.Service.DTOs;
 
 namespace CodeValue.ScrumBoard.Service.Managers
 {
-    public class UserManager : IUserManager
+    internal class UserManager : IUserManager
     {
         public async Task<string> CreateUser(NewUser user)
         {

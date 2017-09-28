@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Service.Managers
 {
-    public interface IBoardManager
+    internal interface IBoardManager
     {
         IEnumerable<Board> GetBoards();
         Task<Board> CreateBoardAsync(NewBoardDetails board);
