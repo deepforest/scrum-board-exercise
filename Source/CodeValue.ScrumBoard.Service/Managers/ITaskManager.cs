@@ -6,7 +6,7 @@ using Task = CodeValue.ScrumBoard.Service.Entities.Task;
 
 namespace CodeValue.ScrumBoard.Service.Managers
 {
-    internal interface ITaskManager
+    public interface ITaskManager
     {
         System.Threading.Tasks.Task<string> CreateTask(NewTask newTask);
         System.Threading.Tasks.Task<bool> UpdateTask(UpdateTask updateTask);

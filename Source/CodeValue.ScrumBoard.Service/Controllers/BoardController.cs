@@ -19,7 +19,7 @@ namespace CodeValue.ScrumBoard.Service.Controllers
     {
         private readonly IBoardManager _boardManager;
 
-        internal BoardController(IBoardManager boardManager)
+        public BoardController(IBoardManager boardManager)
         {
             _boardManager = boardManager;
         }

@@ -14,7 +14,7 @@ namespace CodeValue.ScrumBoard.Service.Controllers
     {
         private readonly ITaskManager _taskManager;
 
-        internal TaskController(ITaskManager taskManager)
+        public TaskController(ITaskManager taskManager)
         {
             _taskManager = taskManager;
         }

@@ -17,7 +17,7 @@ namespace CodeValue.ScrumBoard.Service.Controllers
     {
         private readonly IUserManager _userManager;
 
-        internal UserController(IUserManager userManager)
+        public UserController(IUserManager userManager)
         {
             _userManager = userManager;
         }
