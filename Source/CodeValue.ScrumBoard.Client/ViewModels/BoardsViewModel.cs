@@ -17,7 +17,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
     public class BoardsViewModel : Conductor<Screen>.Collection.AllActive, IBoardsViewModel<object> ,  IHandle<NewBoardForDelete>
     {
         private readonly IEventAggregator _eventAggregator;
-        private readonly Func<BoardItemViewModel> _boardItemViewModelCreator;
+        private readonly Func<IBoardItemViewModel<BoardActivePayload>> _boardItemViewModelCreator;
 
         public BoardsViewModel(IEventAggregator eventAggregator)
         {
