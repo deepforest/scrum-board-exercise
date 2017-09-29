@@ -35,6 +35,9 @@
                         <DataTrigger Binding="{ Binding IsEditable }" Value="True">
                             <Setter Property="IsReadOnly" Value="False"/>
                         </DataTrigger>
+                        <DataTrigger Binding="{ Binding IsEditable }" Value="False">
+                            <Setter Property="IsReadOnly" Value="True"/>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </TextBox.Style>
@@ -49,6 +52,9 @@
                         <DataTrigger Binding="{ Binding IsEditable }" Value="True">
                             <Setter Property="IsReadOnly" Value="False"/>
                         </DataTrigger>
+                        <DataTrigger Binding="{ Binding IsEditable }" Value="False">
+                            <Setter Property="IsReadOnly" Value="True"/>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </TextBox.Style>
@@ -61,6 +67,9 @@
                     <Style.Triggers>
                         <DataTrigger Binding="{ Binding IsEditable }" Value="True">
                             <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{ Binding IsEditable }" Value="False">
+                            <Setter Property="Visibility" Value="Hidden"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -76,7 +85,10 @@
                             <DataTrigger Binding="{ Binding IsEditable }" Value="True">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
-                        </Style.Triggers>
+                        <DataTrigger Binding="{ Binding IsEditable }" Value="False">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
                     </Style>
                 </Button.Style>
             </Button>
@@ -93,6 +105,9 @@
                     <Style.Triggers>
                         <DataTrigger Binding="{ Binding IsEditable }" Value="True">
                             <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{ Binding IsEditable }" Value="False">
+                            <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
