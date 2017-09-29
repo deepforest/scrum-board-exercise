@@ -5,12 +5,10 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Service.DTOs
 {
-    public class NewUser
+    public class LoginResponse
     {
-        public string Name { get; set; }
+        public string JwtToken { get; set; }
 
-        public string Password { get; set; }
-
-        public byte[] Image { get; set; }
+        public string Error { get; set; }
     }
 }

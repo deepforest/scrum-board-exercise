@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.Apis
 {
-    interface ITaskApi
+    [Headers("Authorization: Bearer")]
+    public interface ITaskApi
     {
         [Get("/task")]
         Task<TaskModel> CreateTaskAsync();

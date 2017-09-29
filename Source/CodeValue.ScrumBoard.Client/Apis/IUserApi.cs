@@ -1,4 +1,5 @@
-﻿using CodeValue.ScrumBoard.Client.Models;
+﻿using CodeValue.ScrumBoard.Client.DTOs;
+using CodeValue.ScrumBoard.Client.Models;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -7,19 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.Apis
-{
+{    
     public interface IUserApi
     {
-        
-        [Post("/user/login")]
-        Task<UserModel> GetUserAsync(UserModel student);
-
         [Post("/user")]
-        Task<string> CreateUserAsync(UserModel student);
+        Task RegisterUserAsync([Body] UserRegistrationDto registration);
 
-        [Delete("/user/{id}")]
-        Task DeleteUserAsync(int id);
+        [Post("/user/login")]
+        Task<LoginResponse> LoginAsync([Body] UserCredentialsDto credentials);
+
+        [Get("/user")]
+        [Headers("Authorization: Bearer")]
+        Task<GetUsersResponse> GetUsersAsync();
+
+        [Get("/user/{userName}")]
+        [Headers("Authorization: Bearer")]
+        Task<GetUserResponse> GetUserAsync(string userName);
     }
-
-  
 }

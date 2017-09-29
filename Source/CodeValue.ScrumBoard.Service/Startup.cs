@@ -9,10 +9,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.Extensions.PlatformAbstractions;
+using System.IO;
+using Microsoft.IdentityModel.Tokens;
+using CodeValue.ScrumBoard.Service.Infrastructure;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace CodeValue.ScrumBoard.Service
 {
-    public class Startup
+    internal class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -24,9 +31,32 @@ namespace CodeValue.ScrumBoard.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services
+                .AddAuthentication()
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = AuthHelper.Issuer,
+                        ValidAudience = AuthHelper.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AuthHelper.PrivateSecretKey))
+                    };
+                });
+
             services.AddMvc();
 
+            services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<IBoardManager, BoardManager>();
+            services.AddTransient<ITaskManager, TaskManager>();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Virtual Scrum Board API", Version = "v1" });
+                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                var xmlPath = Path.Combine(basePath, $"{PlatformServices.Default.Application.ApplicationName}.xml");
+                c.IncludeXmlComments(xmlPath);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +67,16 @@ namespace CodeValue.ScrumBoard.Service
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSwagger();
+
+            //Enable middleware to serve swagger-ui (HTML, JS, CSS etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                var path = env.ContentRootPath;
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Virtual Scrum Board API V1");
+            });
+
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

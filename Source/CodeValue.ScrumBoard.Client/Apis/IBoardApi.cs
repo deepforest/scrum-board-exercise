@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.Apis
 {
-    interface IBoardApi
+    [Headers("Authorization: Bearer")]
+    public interface IBoardApi
     {
         [Get("/task/{boardId}}")]
         Task<IEnumerable<TaskModel>> GetBoardTasksAsync(string boardId);

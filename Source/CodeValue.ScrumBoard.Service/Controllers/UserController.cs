@@ -1,58 +1,114 @@
 ﻿using CodeValue.ScrumBoard.Service.DTOs;
-using CodeValue.ScrumBoard.Service.Entities;
 using CodeValue.ScrumBoard.Service.Managers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
 
 namespace CodeValue.ScrumBoard.Service.Controllers
 {
+    /// <summary>
+    /// Virtual scrum board user APIs.
+    /// </summary>
     [Produces("application/json")]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UserController : Controller
     {
-        [HttpGet]
-        public IActionResult Test()
-        {
-            return Ok("Test response ok.");
-        }
-        
+        private readonly IUserManager _userManager;
 
-        [HttpGet("{id}", Name = nameof(GetUser))]
-        public IActionResult GetUser(int id)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userManager"></param>
+        public UserController(IUserManager userManager)
         {
-            var manager = new UserManager();
-            var user = manager.GetUsers().FirstOrDefault(u => Equals(u.Id, id));
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return Ok(user);
+            _userManager = userManager;
         }
 
-        [HttpPost("[action]")]
-        public IActionResult Login([FromBody] LoginUser user)
-        {
-            var manager = new UserManager();
-            var userFromDb = manager.GetUsers().FirstOrDefault(u => Equals(u.Name, user.Name) && Equals(u.Secret, user.Password));
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return Ok(userFromDb);
-        }
-
+        /// <summary>
+        /// Create a new user.
+        /// </summary>
+        /// <param name="registration">User registration details.</param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] NewUser user)
+        [AllowAnonymous]
+        public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto registration)
         {
-            var manager = new UserManager();
-            var id = await manager.CreateUser(user);
-            if (id == null)
+            try
             {
-                return NotFound();
+                await _userManager.RegisterUserAsync(registration);
+                return Ok(new RegisterUserResponse());
             }
-            return Ok(id);
+            catch (System.Exception ex)
+            {
+                return BadRequest(new RegisterUserResponse { Error = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Authenticate given user.
+        /// </summary>
+        /// <param name="credentials">User credentials..</param>
+        /// <returns></returns>
+        [HttpPost("[action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] UserCredentialsDto credentials)
+        {
+            try
+            {
+                var token = await _userManager.AuthenticateUserAsync(credentials);
+                return Ok(new LoginResponse { JwtToken = token });
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(new LoginResponse { Error = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Get all users.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+            try
+            {
+                var users = await _userManager.GetAllUsersAsync();
+                var userList = users.ToList();
+                return Ok(new GetUsersResponse
+                {
+                    Count = userList.Count,
+                    Users = userList
+                });
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(new GetUsersResponse { Error = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Get all users.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{userName}")]
+        public async Task<IActionResult> GetUserByName(string userName)
+        {
+            try
+            {
+                var user = await _userManager.GetUserByNameAsync(userName);
+                return Ok(new GetUserResponse
+                {
+                    User = user
+                });
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(new GetUsersResponse { Error = ex.Message });
+            }
         }
     }
 }

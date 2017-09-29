@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace CodeValue.ScrumBoard.Service.Managers
 {
-    public class TaskManager : ITaskManager
+    internal class TaskManager : ITaskManager
     {
         public async Task<string> CreateTask(NewTask newTask)
         {
@@ -53,7 +53,7 @@ namespace CodeValue.ScrumBoard.Service.Managers
             return true;
         }
 
-        public async System.Threading.Tasks.Task DeleteTask(ObjectId id)
+        public async System.Threading.Tasks.Task DeleteTask(string id)
         {
             var tasksCollection = GetCollection<Entities.Task>(DbCollections.Tasks);
             var Deletetask = await tasksCollection.DeleteOneAsync(Builders<Entities.Task>.Filter.Eq("Id", id));
