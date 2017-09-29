@@ -23,26 +23,27 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         private Func<INavigation<object>> _loginViewModelCreator;
         private Func<INavigation<object>> _boardsViewModelCreator;
         private Func<INavigation<object>> _taskViewModelCreator;
-        private Func<INavigation<BoardActiveMessage>> _boardItemViewModelCreator;
+        private Func<INavigation<object>> _boardItemViewModelCreator;
+        private Func<INavigation<BoardActiveMessage>> _boardViewModelCreator;
 
 
         private string _currentUserName;
         private ImageSource _userImage;
 
-
-
         public MainViewModel(IEventAggregator eventAggregator,
                             Func<ILoginViewModel<object>> loginViewModelCreator,
-                            Func<IBoardsViewModel<object>> boardViewModelCreator,
+                            Func<IBoardsViewModel<object>> boardsViewModelCreator,
+                            Func<IBoardViewModel<BoardActiveMessage>> boardViewModelCreator,
                             Func<ITaskViewModel<object>> taskViewModelCreator,
-                            Func<IBoardItemViewModel<BoardActiveMessage>> boardItemViewModelCreator)
+                            Func<IBoardItemViewModel<object>> boardItemViewModelCreator)
         {
             _progressBarVisibility = Visibility.Collapsed;
             eventAggregator.Subscribe(this);
             _loginViewModelCreator = loginViewModelCreator;
-            _boardsViewModelCreator = boardViewModelCreator;
+            _boardsViewModelCreator = boardsViewModelCreator;
             _taskViewModelCreator = taskViewModelCreator;
             _boardItemViewModelCreator = boardItemViewModelCreator;
+            _boardViewModelCreator = boardViewModelCreator;
 
             Items.AddRange(new INavigation<object>[]
             {
@@ -179,7 +180,9 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
         public void Handle(BoardActiveMessage message)
         {
-           //// message.BoardId
+
+            Navigate(_boardViewModelCreator(), message);
+            //// message.BoardId
             //Navigate<object>(_boardViewModelCreator(), null);
         }
 

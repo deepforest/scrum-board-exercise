@@ -92,7 +92,7 @@
     <Compile Include="DTOs\UserDto.cs" />
     <Compile Include="DTOs\UserRegistrationDto.cs" />
     <Compile Include="Messages\BoardActiveMessage.cs" />
-    <Compile Include="Messages\NewBoardForDeleteMessage.cs" />
+    <Compile Include="Messages\BoardForDeleteMessage.cs" />
     <Compile Include="Messages\TaskSelectedMessage.cs" />
     <Compile Include="Messages\UserLoggedInMessage.cs" />
     <Compile Include="Messages\UserLoggedOutMessage.cs" />

@@ -3,9 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:CodeValue.ScrumBoard.Client.Views"
-             xmlns:local1="clr-namespace:CodeValue.ScrumBoard.Client.ViewModels"
-                xmlns:cal="http://www.caliburnproject.org"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" Height="177" Width="279.975">
 
     <UserControl.Resources>
@@ -31,6 +29,7 @@
             <TextBox.Style>
                 <Style TargetType="{x:Type TextBox}">
                     <Setter Property="IsReadOnly" Value="True"/>
+                    <Setter Property="Background" Value="DodgerBlue"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{ Binding IsEditable }" Value="True">
                             <Setter Property="IsReadOnly" Value="False"/>
@@ -42,12 +41,13 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
-        
+
         <TextBox x:Name="BoardDescription" Text="{Binding Description, Mode=OneWay}" Grid.Row="1" Grid.Column="0" 
                                  Grid.ColumnSpan="2" FontSize="10">
             <TextBox.Style>
                 <Style TargetType="{x:Type TextBox}">
                     <Setter Property="IsReadOnly" Value="True"/>
+                    <Setter Property="Background" Value="DodgerBlue"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{ Binding IsEditable }" Value="True">
                             <Setter Property="IsReadOnly" Value="False"/>
@@ -60,7 +60,7 @@
             </TextBox.Style>
         </TextBox>
         <Button x:Name="BoardXButton" Content="X"  Grid.Row="0" Grid.Column="2" 
-                                 FontSize="15" cal:Message.Attach="[Event Click] = [Action DiscardBoardDetailsChanges()]">
+                                 FontSize="15" cal:Message.Attach="[Event Click] = [Action DiscardChanges()]">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Visibility" Value="Hidden"/>
@@ -76,28 +76,28 @@
             </Button.Style>
         </Button>
 
-            <Button x:Name="BoardSaveButton" Content="Save"  Grid.Row="2" Grid.Column="2" 
+        <Button x:Name="BoardSaveButton" Content="Save"  Grid.Row="2" Grid.Column="2" 
                                 FontSize="15" cal:Message.Attach="[Event Click] = [Action SaveBoardDetailsChangesAsync(BoardName.Text,BoardDescription.Text)]">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Visibility" Value="Hidden"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{ Binding IsEditable }" Value="True">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{ Binding IsEditable }" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
                         <DataTrigger Binding="{ Binding IsEditable }" Value="False">
                             <Setter Property="Visibility" Value="Hidden"/>
                         </DataTrigger>
                     </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
+                </Style>
+            </Button.Style>
+        </Button>
 
         <Menu Grid.Row="0" Grid.Column="2" RenderTransformOrigin="0.5,0.5" Margin="7,-7,7,7">
             <MenuItem Header="..." FontSize="19">
-                <MenuItem Header="Open" />
+                <MenuItem Header="Open" cal:Message.Attach="[Event Click] = [Action  OpenBoard()]"/>
                 <MenuItem Header="Edit" cal:Message.Attach="[Event Click] = [Action EditBoard()]"/>
-                <MenuItem Header="Delete"/>
+                <MenuItem Header="Delete" cal:Message.Attach="[Event Click] = [Action RemoveBoard()]"/>
             </MenuItem>
             <Menu.Style>
                 <Style TargetType="{x:Type Menu}">

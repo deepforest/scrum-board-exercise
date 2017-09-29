@@ -132,7 +132,7 @@ namespace CodeValue.ScrumBoard.Client
             builder.RegisterType<BoardsViewModel>().As<IBoardsViewModel<object>>();
             builder.RegisterType<BoardViewModel>().As<IBoardViewModel<BoardActiveMessage>>();
             builder.RegisterType<TaskViewModel>().As<ITaskViewModel<object>>();
-            builder.RegisterType<BoardItemViewModel>().As<IBoardItemViewModel<BoardActiveMessage>>();
+            builder.RegisterType<BoardItemViewModel>().As< IBoardItemViewModel<object>>();
         }
     }
 

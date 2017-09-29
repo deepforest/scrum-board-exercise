@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.Navigation
 {
-    public interface IBoardViewModel<BoardActivePayload> : INavigation<BoardActivePayload>
+    public interface IBoardViewModel<BoardActiveMessage> : INavigation<BoardActiveMessage>
     {
     }
 }

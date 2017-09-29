@@ -13,5 +13,11 @@ namespace CodeValue.ScrumBoard.Client.Messages
     {
         public string BoardId { get; set; }
         public string BoardName { get; set; }
+
+        public BoardActiveMessage(string boardId ,string boardName)
+        {
+            BoardId = boardId;
+            BoardName = boardName;
+        }
     }
 }

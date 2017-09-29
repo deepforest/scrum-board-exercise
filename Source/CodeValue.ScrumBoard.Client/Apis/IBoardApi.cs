@@ -11,7 +11,7 @@ namespace CodeValue.ScrumBoard.Client.Apis
     [Headers("Authorization: Bearer")]
     public interface IBoardApi
     {
-        [Get("/task/{boardId}}")]
+        [Get("/task/{boardId}")]
         Task<IEnumerable<TaskModel>> GetBoardTasksAsync(string boardId);
 
         [Get("/Board")]
@@ -19,5 +19,11 @@ namespace CodeValue.ScrumBoard.Client.Apis
 
         [Post("/Board")]
         Task<Board> CreateBoardAsync(Board board);
+
+        [Delete("/Board/{boardId}")]
+        Task<bool> DeleteBoard(string boardId);
+
+        [Put("/Board")]
+        Task<Board> UpdateBoardDetails(Board board);
     }
 }

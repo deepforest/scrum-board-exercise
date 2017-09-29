@@ -11,22 +11,25 @@ using CodeValue.ScrumBoard.Client.Messages;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public class BoardsViewModel : Conductor<Screen>.Collection.AllActive, IBoardsViewModel<object>, IHandle<NewBoardForDeleteMessage>
+    public class BoardsViewModel : Conductor<Screen>.Collection.AllActive, IBoardsViewModel<object>, IHandle<BoardForDeleteMessage>
     {
         private readonly IBoardApi _boardApi;
         private readonly IEventAggregator _eventAggregator;
-        private readonly Func<IBoardItemViewModel<BoardActivePayload>> _boardItemViewModelCreator;
+        private Func<IBoardItemViewModel<object>> _boardItemViewModelCreator;
 
-        public BoardsViewModel(IBoardApi boardApi, IEventAggregator eventAggregator)
+        public BoardsViewModel(IBoardApi boardApi, IEventAggregator eventAggregator
+            , Func<IBoardItemViewModel<object>> boardItemViewModelCreator)
         {
+            _boardItemViewModelCreator = boardItemViewModelCreator;
             _boardApi = boardApi;
-            _eventAggregator = eventAggregator;
+            //_eventAggregator = eventAggregator;
+            eventAggregator.Subscribe(this);
             //  _boardItemViewModelCreator = boardItemViewModelCreator;
         }
 
         public void AddNewBoard()
         {
-            var newBoardItemVm = new BoardItemViewModel(_boardApi);
+            var newBoardItemVm = (BoardItemViewModel)_boardItemViewModelCreator();
             Items.Add(newBoardItemVm);
         }
 
@@ -36,15 +39,14 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
 
             foreach (var board in boards)
             {
-                var newBoardItemVm = new BoardItemViewModel(_boardApi)
-                {
-                    Description = board.Description,
-                    Name = board.Name,
-                    Id = board.Id.ToString(),
-                    IsEditable = false,
-                    IsInTheDb = true
+                var newBoardItemVm = (BoardItemViewModel)_boardItemViewModelCreator();
 
-                };
+                newBoardItemVm.Description = board.Description;
+                newBoardItemVm.Name = board.Name;
+                newBoardItemVm.Id = board.Id.ToString();
+                newBoardItemVm.IsEditable = false;
+                newBoardItemVm.IsInTheDb = true;
+
                 Items.Add(newBoardItemVm);
             }
 
@@ -54,7 +56,7 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         private async Task<IEnumerable<Board>> GetAllBoardsAsync()
         {
             try
-            {                
+            {
                 var boards = await _boardApi.GetBoardsAsync();
                 return boards;
             }
@@ -65,14 +67,35 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         }
 
 
-        public void OpenBoard(BoardItemViewModel boardItem)
+      
+
+        public async void Handle(BoardForDeleteMessage message)
         {
-            _eventAggregator.PublishOnUIThread(new BoardActiveMessage());
+            if (!String.IsNullOrEmpty(message.BoardId))
+            {
+               await _boardApi.DeleteBoard(message.BoardId);
+            }
+            int indexToDelete = GetBoardIndex(message.BoardId);
+            if(indexToDelete>-1) Items.RemoveAt(indexToDelete);
+
         }
 
-        public void Handle(NewBoardForDeleteMessage message)
+        private int GetBoardIndex(string boardId)
         {
-            Items.Remove(Items.LastOrDefault());
+            int index = -1;
+            if (String.IsNullOrEmpty(boardId))
+            {
+                index = (Items.Count - 1);
+            }
+            else
+            {
+                for (int i=0;i<Items.Count;i++)
+                {
+                   if( ((BoardItemViewModel)Items[i]).Id == boardId ) return i;
+                }
+            }
+            return index;
+
         }
     }
 }

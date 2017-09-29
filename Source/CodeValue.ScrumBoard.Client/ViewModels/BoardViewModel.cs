@@ -41,13 +41,19 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
         {
             var tasks = await GetAllBoardTasksAsync(payload.BoardId);
             BoardName = payload.BoardName;
-            var taskVMs = tasks.Select(i => new TaskItemViewModel());
+
             TodoTasks.Clear();
             DoingTasks.Clear();
             DoneTasks.Clear();
-            TodoTasks.AddRange(taskVMs.Where(x => x.Status == TaskModelStatus.Todo));
-            DoingTasks.AddRange(taskVMs.Where(x => x.Status == TaskModelStatus.Doing));
-            DoneTasks.AddRange(taskVMs.Where(x => x.Status == TaskModelStatus.Done));
+
+            if (tasks.Count() != 0 && tasks != null)
+            {
+                var taskVMs = tasks.Select(i => new TaskItemViewModel());
+                TodoTasks.AddRange(taskVMs.Where(x => x.Status == TaskModelStatus.Todo));
+                DoingTasks.AddRange(taskVMs.Where(x => x.Status == TaskModelStatus.Doing));
+                DoneTasks.AddRange(taskVMs.Where(x => x.Status == TaskModelStatus.Done));
+            }
+         
             return true;
         }
 

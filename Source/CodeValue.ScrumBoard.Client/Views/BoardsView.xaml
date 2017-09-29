@@ -9,9 +9,6 @@
              xmlns:cal="http://www.caliburnproject.org"
              d:DesignHeight="500" d:DesignWidth="500">
 
-    <UserControl.Resources>
-        <local1:BoardItemViewModel x:Key="BoardItem" x:Shared="False"/>
-    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="39*"/>
@@ -31,7 +28,7 @@
         <Button Content ="+" FontSize="40" Grid.Column="2" Grid.Row="0" Margin="20"  Background="White"
                 cal:Message.Attach="[Event Click] = [Action AddNewBoard()]" />
 
-        <ItemsControl ItemsSource="{Binding Items}"
+        <ItemsControl x:Name="BoardsItems" ItemsSource="{Binding Items}"
                        Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -39,12 +36,12 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
 
-            <ItemsControl.ItemContainerStyle>
-                <Style >
-                    <Setter Property="cal:View.Model" Value="{StaticResource BoardItem}" />
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-            
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <ContentControl cal:View.Model="{Binding}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+
         </ItemsControl>
     </Grid>
 </UserControl>

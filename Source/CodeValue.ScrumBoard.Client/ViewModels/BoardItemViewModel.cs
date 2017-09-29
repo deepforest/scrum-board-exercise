@@ -9,25 +9,28 @@ using CodeValue.ScrumBoard.Client.Messages;
 
 namespace CodeValue.ScrumBoard.Client.ViewModels
 {
-    public class BoardItemViewModel : Screen, IBoardItemViewModel<BoardActiveMessage>
+    public class BoardItemViewModel : Screen, IBoardItemViewModel<object>
     {
-        
+
         private bool _isEditable;
         private bool _isInTheDb;
 
         private string _description;
         private string _name;
         private readonly IBoardApi _boardApi;
+        private readonly IEventAggregator _eventAggregator;
 
         public string Id { get; set; }
 
-        public BoardItemViewModel(IBoardApi boardApi)
+
+        public BoardItemViewModel(IBoardApi boardApi, IEventAggregator eventAggregator)
         {
             IsInTheDb = false;
             IsEditable = true;
             _description = "Project Description";
             _name = "Project Name";
             _boardApi = boardApi;
+            _eventAggregator = eventAggregator;
         }
 
         public string Description
@@ -73,9 +76,9 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             }
         }
 
-        public Task<bool> NavigateToAsync(BoardActiveMessage args)
+        public Task<bool> NavigateToAsync(object args)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(true);
         }
 
         public async void SaveBoardDetailsChangesAsync(string name, string descreption)
@@ -87,10 +90,18 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
                     Description = descreption,
                     Name = name
                 };
-
-                var recievedBoard = await _boardApi.CreateBoardAsync(board);
-                Id = recievedBoard.Id.ToString();
-                IsInTheDb = true;
+               if(!_isInTheDb)
+                {
+                    var recievedBoard = await _boardApi.CreateBoardAsync(board);
+                    Id = recievedBoard.Id.ToString();
+                    IsInTheDb = true;
+                }
+               else
+                {
+                    board.Id = Id;
+                    await _boardApi.UpdateBoardDetails(board);
+                }
+                
                 IsEditable = false;
             }
             catch (Exception ex)
@@ -103,12 +114,26 @@ namespace CodeValue.ScrumBoard.Client.ViewModels
             IsEditable = true;
         }
 
-        public void DiscardBoardDetailsChanges()
+        public void RemoveBoard()
         {
+            _eventAggregator.PublishOnUIThread(new BoardForDeleteMessage(Id));
+        }
+
+        public void DiscardChanges()
+        {
+            IsEditable = false;
+            Name = Name;
+            Description = Description;
+
             if (!IsInTheDb)
             {
-                //   _eventAggregator.PublishOnUIThread(new NewBoardForDelete());
+                _eventAggregator.PublishOnUIThread(new BoardForDeleteMessage(Id));
             }
+        }
+
+        public void OpenBoard()
+        {
+            _eventAggregator.PublishOnUIThread(new BoardActiveMessage(Id,Name));
         }
     }
 }
