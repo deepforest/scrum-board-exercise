@@ -21,7 +21,7 @@ namespace CodeValue.ScrumBoard.Client.Modules
             // Set the properties located.
             foreach (var propToSet in properties)
             {
-                propToSet.SetValue(instance, LogManager.GetLogger(instanceType), null);
+                propToSet.SetValue(instance, LogManager.GetLogger(instanceType), null);//
             }
         }
 
