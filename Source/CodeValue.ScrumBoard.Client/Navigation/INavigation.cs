@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CodeValue.ScrumBoard.Client.Navigation
 {
-    public interface INavigation<T>  
+    public interface INavigation<in T>  
     {        
         Task<bool> NavigateToAsync(T args);
     }
